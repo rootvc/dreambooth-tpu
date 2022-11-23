@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-conda activate db
-accelerate launch ../src/training.py \
+conda run -n db accelerate launch ./src/training.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
-  --instance_data_dir="../instance-images/" \
-  --class_data_dir="../class-images/" \
-  --output_dir="../output-models/" \
+  --instance_data_dir="./instance-images/" \
+  --class_data_dir="./class-images/" \
+  --output_dir="./output-models/" \
   --with_prior_preservation --prior_loss_weight=1.0 \
   --instance_prompt="photo of zwx person" \
   --class_prompt="photo of person" \
