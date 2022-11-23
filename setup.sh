@@ -1,13 +1,14 @@
-#!/usr/bin/env bash + x
+#!/usr/bin/env bash
+set -x
 
 # Creating conda environment
 conda update -n base conda
-conda create -n "db" python=3.9 ipython
+conda create -n "db" python=3.10 ipython
 
 # Installing required packages
-conda run -n db pip install git+https://github.com/ShivamShrirao/diffusers.git
-conda run -n db pip install -r requirements.txt
-conda run -n db pip install bitsandbytes
+conda run -n db --no-capture-output pip install git+https://github.com/ShivamShrirao/diffusers.git
+conda run -n db --no-capture-output pip install -r requirements.txt
+conda run -n db --no-capture-output pip install bitsandbytes
 
 # Configuring accelerate
 echo Answer: 0, 0, no, no, fp16
@@ -26,3 +27,5 @@ mkdir instance-images class-images output-models output-images
 aws s3 sync s3://rootvc-stable-diffusion/instance-images instance-images
 
 echo You are ready to train!
+set -x
+
