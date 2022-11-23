@@ -1,3 +1,5 @@
 *.pem
 .env
+class-images/
 instance-images/
+output-models/
