@@ -11,11 +11,11 @@ conda run -n db pip install bitsandbytes
 
 echo Configuring accelerate...
 echo Answer: 0, 0, no, no, fp16
-conda run -n db accelerate config
+accelerate config
 
 echo Logging into Hugging Face...
-echo Paste your Hugging Face token here
-conda run -n db huggingface-cli login
+echo Paste your Hugging Face token here, and say Y to the prompt
+huggingface-cli login
 git config --global credential.helper store
 
 echo Syncing to AWS S3 bucket...

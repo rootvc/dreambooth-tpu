@@ -5,7 +5,7 @@ import argparse
 
 parser = argparse.ArgumentParser("simple inference")
 parser.add_argument("prompt", help="A text prompt for the inference model", type=str)
-parser.add_argument("num", "How many images to generate", type=int)
+parser.add_argument("num", help="How many images to generate", type=int)
 ars = parser.parse_args()
 
 device = "cuda"

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+echo Training stable diffusion model using Dreambooth...
 conda run -n db accelerate launch ./src/training.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
