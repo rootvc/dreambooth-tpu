@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+conda activate db
 python ../src/inference.py "disney style animation of zwx person as protagonist in a disney film" 5
 python ../src/inference.py "cartoon of zwx person as comic book superhero" 5
 python ../src/inference.py "detailed oil painting high quality of zwx person in medieval knight armor" 5

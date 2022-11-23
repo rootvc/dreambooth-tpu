@@ -32,10 +32,7 @@ Copy that output and paste it into GitHub as an SSH key under Settings.
 
 Setup Environment
 -----------------
-* Run `01_setup.sh`
-* Reboot the terminal.
-* Run 02_setup.sh`
-(TODO: This is dumb, fix/work around this.)
+`setup.sh`
 
 Note: Setup Accelerate
 ----------------

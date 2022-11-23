@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
 
-echo Installing Python and required packages...
-
+echo Creating conda environment...
 conda update -n base conda
+conda create -n "db" python=3.9 ipython
+conda init
+eval "$(${CONDA_DIR}/bin/conda shell.bash hook 2> /dev/null)"
+
+echo Installing required packages...
 conda activate db
-conda install -c anaconda python=3.9
 pip install git+https://github.com/ShivamShrirao/diffusers.git
 pip install -r requirements.txt
 pip install bitsandbytes
 
-echo Answer 0 0 no no fp16
+echo Configuring accelerate...
+echo Answer: 0, 0, no, no, fp16
 accelerate config
 
+echo Logging into Hugging Face...
 echo Paste your Hugging Face token here
 huggingface-cli login
 git config --global credential.helper store
