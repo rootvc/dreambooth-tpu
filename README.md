@@ -9,22 +9,35 @@ EC2 Instance
 * Instance type: g5.xlarge
 * Go to AWS Console: Security settings -> Change IAM role -> stable-diffusion
 
+Connect
+-------
+`ssh -i dreambooth.pem ec2-user@<IP-ADDRESS>`
+
 (Optional:)
 * Get ssh to work nicely
  * add `PermitTunnel yes` with `sudo vim /etc/ssh/sshd_config`
  * reload ssh with `sudo service sshd reload`
 
-Connect
--------
-`ssh -i dreambooth.pem ec2-user@<IP-ADDRESS>`
+SSH Config & Git Clone
+----------------------
+* `ssh-keygen -t rsa -C "your-email@gmail.com"`
+* `eval "$(ssh-agent -s)" && \
+ssh-add ~/.ssh/id_rsa && \
+ssh-add -l -E sha256 && \
+cat ~/.ssh/id_rsa.pub`
+
+Copy that output and paste it into GitHub as an SSH key under Settings.
+
+`git clone git@github.com:rootvc/dreambooth.git`
 
 Setup Environment
 -----------------
-Run `setup.sh`
-If you get an error partway through the script, reboot the terminal.
+* Run `01_setup.sh`
+* Reboot the terminal.
+* Run 02_setup.sh`
 (TODO: This is dumb, fix/work around this.)
 
-Setup Accelerate
+Note: Setup Accelerate
 ----------------
 `accelerate config`
 
@@ -37,7 +50,7 @@ Do you want to run your training on CPU only (even if a GPU is available)? [yes/
 Do you want to use DeepSpeed? [yes/NO]: no
 Do you wish to use FP16 or BF16 (mixed precision)? [NO/fp16/bf16]: fp16
 
-Login to HuggingFace
+Note: Login to HuggingFace
 --------------------
 `huggingface-cli login`
 Enter huggingface credentials.
