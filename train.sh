@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo Training stable diffusion model using Dreambooth...
-conda run -n db accelerate launch ./src/training.py \
+conda run -n db bash -c 'accelerate launch ./src/training.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
   --instance_data_dir="./instance-images/" \
@@ -24,5 +24,5 @@ conda run -n db accelerate launch ./src/training.py \
   --max_train_steps=2000 \
   --save_interval=500 \
   --with_prior_preservation --prior_loss_weight=1.0 \
-  --train_text_encoder
-  
+  --train_text_encoder \
+> /dev/tty 2>&1'
