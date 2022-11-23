@@ -11,12 +11,15 @@ conda run -n db pip install bitsandbytes
 
 # Configuring accelerate
 echo Answer: 0, 0, no, no, fp16
-accelerate config
+conda run -n db --no-capture-output accelerate config
 
 # Logging into Hugging Face
 echo Paste your Hugging Face token here, and say Y to the prompt
-huggingface-cli login
+conda run -n db --no-capture-output huggingface-cli login
 git config --global credential.helper store
+
+# Making required directories
+mkdir instance-images class-images output-models output-images
 
 # Downloading instance-images
 # Only needed for debugging

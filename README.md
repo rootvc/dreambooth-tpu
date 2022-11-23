@@ -5,9 +5,9 @@ Implements: https://towardsdatascience.com/how-to-fine-tune-stable-diffusion-usi
 Server Provision
 ----------------
 EC2 Instance
-* AMI: Deep Learning with PyTorch 1.2
+* AMI: Deep Learning with PyTorch 1.13
 * Instance type: g5.xlarge
-* Go to AWS Console: Security settings -> Change IAM role -> stable-diffusion
+* IAM role: stable-diffusion
 
 Connect
 -------
@@ -28,11 +28,11 @@ cat ~/.ssh/id_rsa.pub`
 
 Copy that output and paste it into GitHub as an SSH key under Settings.
 
-`git clone git@github.com:rootvc/dreambooth.git`
+`mkdir rootvc && cd rootvc && git clone git@github.com:rootvc/dreambooth.git && cd dreambooth`
 
 Setup Environment
 -----------------
-`setup.sh`
+`./setup.sh`
 
 Note: Setup Accelerate
 ----------------

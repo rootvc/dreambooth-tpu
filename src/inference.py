@@ -6,7 +6,7 @@ import argparse
 parser = argparse.ArgumentParser("simple inference")
 parser.add_argument("prompt", help="A text prompt for the inference model", type=str)
 parser.add_argument("num", help="How many images to generate", type=int)
-ars = parser.parse_args()
+args = parser.parse_args()
 
 device = "cuda"
 # use DDIM scheduler, you can modify it to use other scheduler
@@ -23,9 +23,9 @@ pipe = StableDiffusionPipeline.from_pretrained(
 # enable xformers memory attention
 # pipe.enable_xformers_memory_efficient_attention()
 
-prompt = "photo of zwx bear toy"
+prompt = args.prompt
 negative_prompt = ""
-num_samples = 4
+num_samples = args.num
 guidance_scale = 7.5
 num_inference_steps = 50
 height = 512
