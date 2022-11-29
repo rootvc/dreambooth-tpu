@@ -50,4 +50,4 @@ conda run -n db --no-capture-output python ./src/inference.py \
     --step $STEP
 
 echo Uploading to AWS S3 bucket...
-conda run -n db --no-capture-output aws s3 sync ./s3/output s3://rootvc-stable-diffusion/output
+aws s3 sync ./s3/output s3://rootvc-dreambooth/output
