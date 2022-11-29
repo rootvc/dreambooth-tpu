@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 
-echo Downloading from AWS S3 bucket...
+echo Learning stable diffusion model for $1 using Dreambooth...
+
+if [[ $# -eq 0 ]]; then
+    echo "ERROR: Provide an argument for the subject's unique identifier"
+    exit 1
+fi
+
+echo Downloading input images from AWS S3 bucket...
 mkdir -p ./s3/input/$1
 aws s3 sync s3://rootvc-dreambooth/input/$1 ./s3/input/$1
 
-echo Learning stable diffusion model for $1 using Dreambooth...
 time conda run -n db --no-capture-output \
   accelerate launch --num_cpu_threads_per_process=96 ./src/training.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \

@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [[ $# -eq 0 ]]; then
+    echo "ERROR: Provide an argument for the subject's unique identifier"
+    exit 1
+fi
+
 export STEP=750
 echo Generating images for $1
 echo Transfer learning beginning at step: $STEP
