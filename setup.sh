@@ -25,7 +25,7 @@ conda run -n db --no-capture-output huggingface-cli login
 git config --global credential.helper store
 
 # Making required directories
-mkdir s3 s3/class s3/models s3/input s3/output
+mkdir -p s3 s3/class s3/models s3/input s3/output
 aws s3 sync s3://rootvc-dreambooth/class s3/class # Only needed to speed up setup
 aws s3 sync s3://rootvc-dreambooth/input s3/input # Only needed for debugging
 
