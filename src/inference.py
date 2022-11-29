@@ -4,24 +4,34 @@ import time
 import argparse
 
 parser = argparse.ArgumentParser("simple inference")
-parser.add_argument("prompt", help="A text prompt for the inference model", type=str)
-parser.add_argument("num", help="How many images to generate", type=int)
+parser.add_argument("--prompt", help="A text prompt for the inference model", type=str)
+parser.add_argument("--name", help="A name for this prompt to use in the filename", type=str)
+parser.add_argument("--id", help="A unique identifier for this subject (person)", type=str)
+parser.add_argument("--num", help="How many images to generate", type=int)
+parser.add_argument("--step", help="Step to begin transfer learning", type=int)
 args = parser.parse_args()
 
 device = "cuda"
 # use DDIM scheduler, you can modify it to use other scheduler
-scheduler = DDIMScheduler(beta_start=0.00085, beta_end=0.012, beta_schedule="scaled_linear", clip_sample=False, set_alpha_to_one=True)
+scheduler = DDIMScheduler(
+    beta_start=0.00085,
+    beta_end=0.012,
+    beta_schedule="scaled_linear",
+    clip_sample=False,
+    set_alpha_to_one=True
+    steps_offset=1
+)
 
 # modify the model path
 pipe = StableDiffusionPipeline.from_pretrained(
-    "./output-models/1500/",
+    f"./models/{args.step}/",
     scheduler=scheduler,
     safety_checker=None,
     torch_dtype=torch.float16,
 ).to(device)
 
 # enable xformers memory attention
-# pipe.enable_xformers_memory_efficient_attention()
+pipe.enable_xformers_memory_efficient_attention()
 
 prompt = args.prompt
 negative_prompt = ""
@@ -43,8 +53,8 @@ with torch.autocast("cuda"), torch.inference_mode():
     ).images
     
     now = int(time.time() * 1000)
-    count = 0
+    count = 1
     for image in images:
         # save image to local directory
-        image.save(f"./output-images/{now}-{count}.png")
+        image.save(f"./s3/output/{args.id}_{args.name}_{count}.png")
         count += 1

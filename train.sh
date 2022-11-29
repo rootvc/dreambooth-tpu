@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 
-echo Training stable diffusion model using Dreambooth...
-time conda run -n db --no-capture-output accelerate launch ./src/training.py \
+echo Downloading from AWS S3 bucket...
+mkdir -p ./s3/input/$1
+aws s3 sync s3://rootvc-dreambooth/input/$1 ./s3/input/$1
+
+echo Learning stable diffusion model for $1 using Dreambooth...
+time conda run -n db --no-capture-output \
+  accelerate launch --num_cpu_threads_per_process=96 ./src/training.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
-  --instance_data_dir="./instance-images/" \
-  --class_data_dir="./class-images/" \
-  --output_dir="./output-models/" \
+  --instance_data_dir="./s3/input/$1" \
+  --class_data_dir="./s3/class/" \
+  --output_dir="./models/" \
   --with_prior_preservation --prior_loss_weight=1.0 \
-  --instance_prompt="photo of zwx person" \
+  --instance_prompt="photo of $1 person" \
   --class_prompt="photo of person" \
   --resolution=512 \
   --train_batch_size=1 \
@@ -21,5 +26,6 @@ time conda run -n db --no-capture-output accelerate launch ./src/training.py \
   --lr_scheduler="constant" \
   --lr_warmup_steps=200 \
   --num_class_images=300 \
-  --max_train_steps=2000 \
-  --save_interval=500 \
+  --max_train_steps=1000 \
+  --save_interval=250
+  

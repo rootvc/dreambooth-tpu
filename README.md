@@ -27,6 +27,7 @@ ssh-add -l -E sha256 && \
 cat ~/.ssh/id_rsa.pub`
 
 Copy that output and paste it into GitHub as an SSH key under Settings.
+https://github.com/settings/keys
 
 `mkdir rootvc && cd rootvc && git clone git@github.com:rootvc/dreambooth.git && cd dreambooth`
 
@@ -54,28 +55,10 @@ Enter huggingface credentials.
 (TODO: See if we can answer this Q automatically.)
 `git config --global credential.helper store`
 
-(Development) Download Instance Images
---------------------------------------
-Update the IAM role in AWS console to allow s3 sync.
-This might help: https://gist.github.com/iandees/26c61b7f1e9a51dae91be41d53fc06d3
-`aws s3 sync s3://rootvc-stable-diffusion/instance-images instance-images`
-
 Training
 --------
-`./script/train.sh`
+`./train.sh`
 
 Inference
 ---------
-`./script/infer.sh`
-
-TODO
-----
-* Make training faster
- * get facebook/xformers to build
- * try more cores!
-* Make it possible to train for multiple people
- * scripts take a unique identifer
- * use that for 'class' instead of zwx in both training and inference
- * subdirectories in input and output per person
-* Expose web endpoint
-* Obviously make the front-end for the photobooth itself...
+`./generate.sh`

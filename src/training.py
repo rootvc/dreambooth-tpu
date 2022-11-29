@@ -33,7 +33,7 @@ logger = get_logger(__name__)
 
 
 def parse_args(input_args=None):
-    parser = argparse.ArgumentParser(description="Simple example of a training script.")
+    parser = argparse.ArgumentParser(description="Simple training script.")
     parser.add_argument(
         "--pretrained_model_name_or_path",
         type=str,
@@ -818,5 +818,6 @@ def main(args):
 
 
 if __name__ == "__main__":
-    args = parse_args()
+    args = parse_args()    
+    print(f"Reading input dir: {args.instance_data_dir}")
     main(args)
