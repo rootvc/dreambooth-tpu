@@ -56,5 +56,5 @@ with torch.autocast("cuda"), torch.inference_mode():
     count = 1
     for image in images:
         # save image to local directory
-        image.save(f"./s3/output/{args.id}_{args.name}_{count}.png")
+        image.save(f"./s3/output/{args.id}/{now}_{args.id}_{args.name}_{count}.png")
         count += 1

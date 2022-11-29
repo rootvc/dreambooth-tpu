@@ -9,6 +9,8 @@ export STEP=750
 echo Generating images for $1
 echo Transfer learning beginning at step: $STEP
 
+mkdir -p s3/output/$1
+
 echo Creating subject as Disney protagonist...
 conda run -n db --no-capture-output python ./src/inference.py \
     --prompt "disney style animation of $1 person as protagonist in a disney film" \
@@ -50,4 +52,4 @@ conda run -n db --no-capture-output python ./src/inference.py \
     --step $STEP
 
 echo Uploading to AWS S3 bucket...
-aws s3 sync ./s3/output s3://rootvc-dreambooth/output
+aws s3 sync ./s3/output/$1 s3://rootvc-dreambooth/output/$1
