@@ -6,8 +6,18 @@ Server Provision
 ----------------
 EC2 Instance
 * AMI: Deep Learning with PyTorch 1.13
-* Instance type: g5.xlarge
+* Instance type: g5.{some number}xlarge
 * IAM role: stable-diffusion
+
+Prerequisites
+-------------
+* `dreambooth.pem` file for your EC2 instance
+* HuggingFace key (and accept the Terms and Conditions for the model - see https://towardsdatascience.com/how-to-fine-tune-stable-diffusion-using-dreambooth-dfa6694524ae for details how)
+* AWS Public/Private Key Pair
+* IP address of the EC2 instance
+
+I keep these together in a `.env` file locally for easy reference.
+TODO: load the local `.env` file to make setup easier
 
 Connect
 -------
