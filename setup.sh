@@ -29,8 +29,8 @@ mkdir -p s3 s3/class s3/models s3/input s3/output
 aws s3 sync s3://rootvc-dreambooth/class s3/class # Only needed to speed up first run
 
 # Setting up services
-cp daemon/*.sh /usr/bin/
-cp daemon/*.service /lib/systemd/system/
+sudo cp daemons/*.sh /usr/bin/
+sudo cp daemons/*.service /lib/systemd/system/
 sudo systemctl daemon-reload
 
 # Setting up S3 Sync Service
