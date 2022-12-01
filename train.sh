@@ -17,7 +17,7 @@ time conda run -n db --no-capture-output \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
   --instance_data_dir="$DREAMBOOTH_DIR/s3/input/$1" \
   --class_data_dir="$DREAMBOOTH_DIR/s3/class/" \
-  --output_dir="./models/" \
+  --output_dir="$DREAMBOOTH_DIR/models/" \
   --with_prior_preservation --prior_loss_weight=1.0 \
   --instance_prompt="photo of $1 person" \
   --class_prompt="photo of person" \
