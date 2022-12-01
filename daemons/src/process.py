@@ -25,5 +25,6 @@ if __name__ == "__main__":
         print(f"Found a new set of inputs for token {token}")
         os.system(os.path.expandvars(f"$DREAMBOOTH_DIR/train.sh {token}"))
         os.system(os.path.expandvars(f"$DREAMBOOTH_DIR/generate.sh {token}"))
+        print(f"Finished generating images for {token}")
 
     exit(0)
