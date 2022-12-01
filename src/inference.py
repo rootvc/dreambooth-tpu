@@ -12,49 +12,51 @@ parser.add_argument("--step", help="Step to begin transfer learning", type=int)
 args = parser.parse_args()
 
 device = "cuda"
-# use DDIM scheduler, you can modify it to use other scheduler
-scheduler = DDIMScheduler(
-    beta_start=0.00085,
-    beta_end=0.012,
-    beta_schedule="scaled_linear",
-    clip_sample=False,
-    set_alpha_to_one=True,
-    steps_offset=1
-)
 
-# modify the model path
-pipe = StableDiffusionPipeline.from_pretrained(
-    f"./models/{args.step}/",
-    scheduler=scheduler,
-    safety_checker=None,
-    torch_dtype=torch.float16,
-).to(device)
-
-# enable xformers memory attention
-pipe.enable_xformers_memory_efficient_attention()
-
-prompt = args.prompt
-negative_prompt = ""
-num_samples = args.num
-guidance_scale = 7.5
-num_inference_steps = 50
-height = 512
-width = 512
-
-with torch.autocast("cuda"), torch.inference_mode():
-    images = pipe(
-        prompt,
-        height=height,
-        width=width,
-        negative_prompt=negative_prompt,
-        num_images_per_prompt=num_samples,
-        num_inference_steps=num_inference_steps,
-        guidance_scale=guidance_scale
-    ).images
+if __name__ == "__main__":
+    # use DDIM scheduler, you can modify it to use other scheduler
+    scheduler = DDIMScheduler(
+        beta_start=0.00085,
+        beta_end=0.012,
+        beta_schedule="scaled_linear",
+        clip_sample=False,
+        set_alpha_to_one=True,
+        steps_offset=1
+    )
     
-    now = int(time.time() * 1000)
-    count = 1
-    for image in images:
-        # save image to local directory
-        image.save(f"./s3/output/{args.id}/{now}_{args.id}_{args.name}_{count}.png")
-        count += 1
+    # modify the model path
+    pipe = StableDiffusionPipeline.from_pretrained(
+        f"./models/{args.step}/",
+        scheduler=scheduler,
+        safety_checker=None,
+        torch_dtype=torch.float16,
+    ).to(device)
+    
+    # enable xformers memory attention
+    pipe.enable_xformers_memory_efficient_attention()
+    
+    prompt = args.prompt
+    negative_prompt = ""
+    num_samples = args.num
+    guidance_scale = 7.5
+    num_inference_steps = 50
+    height = 512
+    width = 512
+    
+    with torch.autocast("cuda"), torch.inference_mode():
+        images = pipe(
+            prompt,
+            height=height,
+            width=width,
+            negative_prompt=negative_prompt,
+            num_images_per_prompt=num_samples,
+            num_inference_steps=num_inference_steps,
+            guidance_scale=guidance_scale
+        ).images
+        
+        now = int(time.time() * 1000)
+        count = 1
+        for image in images:
+            # save image to local directory
+            image.save(f"./s3/output/{args.id}/{now}_{args.id}_{args.name}_{count}.png")
+            count += 1

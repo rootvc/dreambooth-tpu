@@ -25,12 +25,8 @@ from torchvision import transforms
 from tqdm.auto import tqdm
 from transformers import CLIPTextModel, CLIPTokenizer
 
-
 torch.backends.cudnn.benchmark = True
-
-
 logger = get_logger(__name__)
-
 
 def parse_args(input_args=None):
     parser = argparse.ArgumentParser(description="Simple training script.")
