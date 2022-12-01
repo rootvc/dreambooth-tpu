@@ -1,0 +1,8 @@
+[Unit]
+Description=Watch file system for changes to S3 sync dirs and execute training/prediction
+
+[Service]
+ExecStart=/usr/bin/dreamwatcher.sh
+
+[Install]
+WantedBy=multi-user.target

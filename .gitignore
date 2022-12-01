@@ -2,3 +2,4 @@
 .env
 models/
 s3/
+daemons/.processing
