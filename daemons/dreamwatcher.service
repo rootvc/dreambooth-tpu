@@ -3,6 +3,8 @@ Description=Watch file system for changes to S3 sync dirs and execute training/p
 
 [Service]
 ExecStart=/usr/bin/dreamwatcher.sh
+User=ec2-user
+Group=ec2-user
 
 [Install]
 WantedBy=multi-user.target

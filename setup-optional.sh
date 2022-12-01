@@ -16,7 +16,7 @@ cd ~
 git clone https://github.com/openai/triton.git
 cd triton/python
 conda run -n db --no-capture-output pip install -e .
-cd ~/rootvc/dreambooth
+cd $DREAMBOOTH_DIR
 
 conda run -n db python -m xformers.info
 

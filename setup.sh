@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -x
 
-# TODO: Can I get confirm and also pre-filled answers in these commands?
+# IMPORTANT: this script must be run while current working directory is the Dreambooth git repo
+export DREAMBOOTH_DIR=`pwd`
+echo 'export DREAMBOOTH_DIR=$DREAMBOOTH_DIR' >> ~/.bashrc 
 
 # Creating conda environment
 conda update -n base conda
@@ -36,13 +38,16 @@ sudo systemctl daemon-reload
 # Setting up S3 Sync Service
 sudo systemctl enable s3sync.service
 sudo systemctl start s3sync.service
-sudo systemctl status s3sync.service
 
 # Setting up Dreamwatcher Service
 sudo systemctl enable dreamwatcher.service
 sudo systemctl start dreamwatcher.service
+
+# Show status of daemons
+sudo systemctl status s3sync.service
 sudo systemctl status dreamwatcher.service
 
 echo You are ready to train!
 echo (Optional) Run ./setup-optional.sh for memory performance improvement
+
 set -x

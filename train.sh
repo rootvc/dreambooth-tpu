@@ -8,15 +8,15 @@ if [[ $# -eq 0 ]]; then
 fi
 
 echo Downloading input images from AWS S3 bucket...
-mkdir -p ./s3/input/$1
-aws s3 sync s3://rootvc-dreambooth/input/$1 ./s3/input/$1
+mkdir -p $DREAMBOOTH_DIR/s3/input/$1
+aws s3 sync s3://rootvc-dreambooth/input/$1 $DREAMBOOTH_DIR/s3/input/$1
 
 time conda run -n db --no-capture-output \
-  accelerate launch --num_cpu_threads_per_process=96 ./src/training.py \
+  accelerate launch --num_cpu_threads_per_process=96 $DREAMBOOTH_DIR/src/training.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
-  --instance_data_dir="./s3/input/$1" \
-  --class_data_dir="./s3/class/" \
+  --instance_data_dir="$DREAMBOOTH_DIR/s3/input/$1" \
+  --class_data_dir="$DREAMBOOTH_DIR/s3/class/" \
   --output_dir="./models/" \
   --with_prior_preservation --prior_loss_weight=1.0 \
   --instance_prompt="photo of $1 person" \

@@ -1,20 +1,18 @@
 #!/bin/bash
 
-source /home/ec2-user/.bashrc
-
 while true
 do
     # Use the .processing empty file as a way to know if the system is occupied
     # I'm not sure if this is necessary. Does the service runner let this process block, or does it launch new ones while this process is blocked?
     
-    if [ -f /home/ec2-user/rootvc/dreambooth/daemons/.processing ]
+    if [ -f $DREAMBOOTH_DIR/daemons/.processing ]
     then
-        echo 'waiting for existing job to finish'
+        echo 'Waiting for existing job to finish...'
     else
-        echo 'checking for new jobs'
-        touch /home/ec2-user/rootvc/dreambooth/daemons/.processing
-        sudo -u ec2-user conda run -n db --no-capture-output python -m /home/ec2-user/rootvc/dreambooth/daemons/src/process.py
-        rm /home/ec2-user/rootvc/dreambooth/daemons/.processing  
+        echo 'Checking for new jobs...'
+        touch $DREAMBOOTH_DIR/.processing
+        conda run -n db --no-capture-output python $DREAMBOOTH_DIR/daemons/src/process.py
+        rm $DREAMBOOTH_DIR/daemons/.processing  
     fi
     
     sleep 10

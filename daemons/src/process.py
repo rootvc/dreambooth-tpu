@@ -11,19 +11,19 @@ def tokenize(fullPath: str):
     return fullPath.split("/")[-1]
 
 if __name__ == "__main__":
-    inputList = dirsInDirectory("/home/ec2-user/rootvc/dreambooth/s3/input")
-    outputList = dirsInDirectory("/home/ec2-user/rootvc/dreambooth/s3/output")
-    
+    inputList = dirsInDirectory(os.path.expandvars("$DREAMBOOTH_DIR/s3/input"))
+    outputList = dirsInDirectory(os.path.expandvars("$DREAMBOOTH_DIR/s3/output"))    
     outputTokens = [tokenize(t) for t in outputList]
     
-    newDirs = [input for input in inputList if tokenize(input) not in outputTokens]
+    newDirs = [i for i in inputList if tokenize(i) not in outputTokens]
     
     print("Found {} new directories".format(len(newDirs)))
         
     if len(newDirs) > 0:
-        dir = newDirs[0]
-        token = tokenize(dir)
+        token = tokenize(newDirs[0])
         
         print("Found a new set of inputs for token {}".format(token))
-        os.system("/home/ec2-user/rootvc/dreambooth/train.sh %" % token)
-        os.system("/home/ec2-user/rootvc/dreambooth/generate.sh %" % token)
+        os.system(os.path.expandvars("$DREAMBOOTH_DIR/train.sh {}").format(token))
+        os.system(os.path.expandvars("$DREAMBOOTH_DIR/generate.sh {}").format(token))
+
+    exit(0)
