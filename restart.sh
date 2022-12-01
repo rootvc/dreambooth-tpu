@@ -3,6 +3,7 @@ set -x
 
 echo Updating and restarting daemons
 
+rm daemons/.processing
 sudo cp daemons/*.sh /usr/bin/
 sudo cp daemons/*.service /lib/systemd/system/
 sudo systemctl daemon-reload
