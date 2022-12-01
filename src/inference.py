@@ -27,7 +27,7 @@ if __name__ == "__main__":
     
     # modify the model path
     pipe = StableDiffusionPipeline.from_pretrained(
-        full_path = os.path.expandvars(f"$DREAMBOOTH_DIR/models/{args.step}"),
+        os.path.expandvars(f"$DREAMBOOTH_DIR/models/{args.step}"),
         scheduler=scheduler,
         safety_checker=None,
         torch_dtype=torch.float16,
