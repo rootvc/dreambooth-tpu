@@ -9,7 +9,7 @@ export STEP=750
 echo Generating images for $1
 echo Transfer learning beginning at step: $STEP
 
-mkdir -p s3/output/$1
+mkdir -p $DREAMBOOTH_DIR/s3/output/$1
 
 echo Creating subject as Disney protagonist...
 conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
