@@ -7,6 +7,9 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
+export STEPS=1000
+export INTERVAL=250
+
 mkdir -p $DREAMBOOTH_DIR/s3/input/$1
 time conda run -n db --no-capture-output \
   accelerate launch --num_cpu_threads_per_process=96 $DREAMBOOTH_DIR/src/training.py \
@@ -29,6 +32,6 @@ time conda run -n db --no-capture-output \
   --lr_scheduler="constant" \
   --lr_warmup_steps=200 \
   --num_class_images=300 \
-  --max_train_steps=1000 \
-  --save_interval=250
+  --max_train_steps=$STEPS \
+  --save_interval=$INTERVAL
   

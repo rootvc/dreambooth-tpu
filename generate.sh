@@ -5,7 +5,7 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
-export STEP=750
+export RETRAIN_STEP=750
 echo Generating images for $1
 echo Transfer learning beginning at step: $STEP
 
@@ -17,7 +17,7 @@ conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
     --name disney \
     --id $1 \
     --num 4 \
-    --step $STEP
+    --step $RETRAIN_STEP
 
 echo Creating subject as comic book superhero...
 conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
@@ -25,7 +25,7 @@ conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
     --name comicbook \
     --id $1 \
     --num 4 \
-    --step $STEP
+    --step $RETRAIN_STEP
 
 echo Creating subject as renaissance painting knight...
 conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
@@ -33,7 +33,7 @@ conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
     --name oilpainting \
     --id $1 \
     --num 4 \
-    --step $STEP
+    --step $RETRAIN_STEP
 
 echo Creating subject in cubist style...
 conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
@@ -41,7 +41,7 @@ conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
     --name cubist \
     --id $1 \
     --num 4 \
-    --step $STEP
+    --step $RETRAIN_STEP
 
 echo Creating subject as anime character...
 conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
@@ -49,7 +49,7 @@ conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
     --name anime \
     --id $1 \
     --num 4 \
-    --step $STEP
+    --step $RETRAIN_STEP
 
 echo Uploading to AWS S3 bucket...
 aws s3 sync $DREAMBOOTH_DIR/s3/output/$1 s3://rootvc-dreambooth/output/$1

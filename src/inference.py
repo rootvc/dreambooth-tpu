@@ -24,6 +24,12 @@ if __name__ == "__main__":
         set_alpha_to_one=True,
         steps_offset=1
     )
+
+    # Use proxies to help with fetching from HF
+    proxies = {
+        "http": "http://10.10.1.10:3128",
+        "https": "https://10.10.1.10:1080",
+    }
     
     # modify the model path
     pipe = StableDiffusionPipeline.from_pretrained(
@@ -31,6 +37,7 @@ if __name__ == "__main__":
         scheduler=scheduler,
         safety_checker=None,
         torch_dtype=torch.float16,
+        proxies=proxies,
     ).to(device)
     
     # enable xformers memory attention
