@@ -7,10 +7,7 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
-echo Downloading input images from AWS S3 bucket...
 mkdir -p $DREAMBOOTH_DIR/s3/input/$1
-aws s3 sync s3://rootvc-dreambooth/input/$1 $DREAMBOOTH_DIR/s3/input/$1
-
 time conda run -n db --no-capture-output \
   accelerate launch --num_cpu_threads_per_process=96 $DREAMBOOTH_DIR/src/training.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
