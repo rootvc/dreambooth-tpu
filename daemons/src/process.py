@@ -27,3 +27,4 @@ if __name__ == "__main__":
         os.system(os.path.expandvars("$DREAMBOOTH_DIR/generate.sh {}").format(token))
 
     exit(0)
+

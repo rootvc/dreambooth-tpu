@@ -9,7 +9,7 @@ do
     then
         echo 'Waiting for existing job to finish...'
     else
-        echo 'Checking for new jobs...'
+        echo 'Queue is idle. Checking for new jobs...'
         touch $DREAMBOOTH_DIR/.processing
         conda run -n db --no-capture-output python $DREAMBOOTH_DIR/daemons/src/process.py
         rm $DREAMBOOTH_DIR/daemons/.processing  
@@ -17,3 +17,4 @@ do
     
     sleep 10
 done
+
