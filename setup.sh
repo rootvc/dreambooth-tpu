@@ -38,6 +38,11 @@ sudo systemctl enable s3sync.service
 sudo systemctl start s3sync.service
 sudo systemctl status s3sync.service
 
+# Setting up Dreamwatcher Service
+sudo systemctl enable dreamwatcher.service
+sudo systemctl start dreamwatcher.service
+sudo systemctl status dreamwatcher.service
+
 echo You are ready to train!
 echo (Optional) Run ./setup-optional.sh for memory performance improvement
 set -x
