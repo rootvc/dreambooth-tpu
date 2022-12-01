@@ -52,4 +52,5 @@ conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
     --step $STEP
 
 echo Uploading to AWS S3 bucket...
-aws s3 sync s3://rootvc-dreambooth/output/$1 $DREAMBOOTH_DIR/s3/output/$1
+aws s3 sync $DREAMBOOTH_DIR/s3/output/$1 s3://rootvc-dreambooth/output/$1
+

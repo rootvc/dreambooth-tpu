@@ -3,7 +3,7 @@ set -x
 
 # IMPORTANT: this script must be run while current working directory is the Dreambooth git repo
 export DREAMBOOTH_DIR=`pwd`
-echo 'export DREAMBOOTH_DIR=$DREAMBOOTH_DIR' >> ~/.bashrc 
+echo 'export DREAMBOOTH_DIR'=$DREAMBOOTH_DIR >> ~/.bashrc 
 
 # Creating conda environment
 conda update -n base conda
@@ -29,6 +29,8 @@ git config --global credential.helper store
 # Making required directories
 mkdir -p s3 s3/class s3/models s3/input s3/output
 aws s3 sync s3://rootvc-dreambooth/class s3/class # Only needed to speed up first run
+aws s3 sync s3://rootvc-dreambooth/input s3/input # Start with up to date input history
+aws s3 sync s3://rootvc-dreambooth/output s3/output # Start with up to date output history (to prevent repeat jobs)
 
 # Setting up services
 sudo cp daemons/*.sh /usr/bin/

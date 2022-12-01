@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source ~/.bashrc
+echo $DREAMBOOTH_DIR
+
 while true
 do
     # Use the .processing empty file as a way to know if the system is occupied
@@ -10,7 +13,7 @@ do
         echo 'Waiting for existing job to finish...'
     else
         echo 'Queue is idle. Checking for new jobs...'
-        touch $DREAMBOOTH_DIR/.processing
+        touch $DREAMBOOTH_DIR/daemons/.processing
         conda run -n db --no-capture-output python $DREAMBOOTH_DIR/daemons/src/process.py
         rm $DREAMBOOTH_DIR/daemons/.processing  
     fi
