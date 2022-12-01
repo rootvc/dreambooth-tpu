@@ -3,7 +3,7 @@ import glob
 import time
 
 def dirsInDirectory(dir_name: str):
-    dirs = filter(os.path.isdir, glob.glob("{}/*".format(dir_name)))
+    dirs = filter(os.path.isdir, glob.glob(f"{dir_name}/*"))
     dirs = sorted(dirs, key = os.path.getmtime) # Oldest first
     return dirs
 
@@ -22,9 +22,8 @@ if __name__ == "__main__":
     if len(newDirs) > 0:
         token = tokenize(newDirs[0])
         
-        print("Found a new set of inputs for token {}".format(token))
-        os.system(os.path.expandvars("$DREAMBOOTH_DIR/train.sh {}").format(token))
-        os.system(os.path.expandvars("$DREAMBOOTH_DIR/generate.sh {}").format(token))
+        print(f"Found a new set of inputs for token {token}")
+        os.system(os.path.expandvars(f"$DREAMBOOTH_DIR/train.sh {token}"))
+        os.system(os.path.expandvars(f"$DREAMBOOTH_DIR/generate.sh {token}"))
 
     exit(0)
-

@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source ~/.bashrc
-echo $DREAMBOOTH_DIR
 
 while true
 do

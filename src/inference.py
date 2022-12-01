@@ -2,6 +2,7 @@ from diffusers import StableDiffusionPipeline, DDIMScheduler
 import torch
 import time
 import argparse
+import os
 
 parser = argparse.ArgumentParser("simple inference")
 parser.add_argument("--prompt", help="A text prompt for the inference model", type=str)
@@ -26,7 +27,7 @@ if __name__ == "__main__":
     
     # modify the model path
     pipe = StableDiffusionPipeline.from_pretrained(
-        f"./models/{args.step}/",
+        os.path.expandvars(f"$DREAMBOOTH_DIR/models/{args.step}")
         scheduler=scheduler,
         safety_checker=None,
         torch_dtype=torch.float16,
@@ -58,5 +59,6 @@ if __name__ == "__main__":
         count = 1
         for image in images:
             # save image to local directory
-            image.save(f"./s3/output/{args.id}/{now}_{args.id}_{args.name}_{count}.png")
+            save_file = os.path.expandvars(f"$DREAMBOOTH_DIR/s3/output/{args.id}/{now}_{args.id}_{args.name}_{count}.png")
+            image.save(save_file)
             count += 1
