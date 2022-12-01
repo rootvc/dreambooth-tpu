@@ -17,9 +17,9 @@ if __name__ == "__main__":
     
     newDirs = [i for i in inputList if tokenize(i) not in outputTokens]
     
-    print("Found {} new directories".format(len(newDirs)))
-        
     if len(newDirs) > 0:
+        print("Found {} new directories".format(len(newDirs)))
+
         token = tokenize(newDirs[0])
         
         print(f"Found a new set of inputs for token {token}")
