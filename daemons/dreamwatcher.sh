@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source /home/ec2-user/.bashrc
+
 while true
 do
     # Use the .processing empty file as a way to know if the system is occupied
