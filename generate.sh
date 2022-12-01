@@ -13,7 +13,7 @@ mkdir -p $DREAMBOOTH_DIR/s3/output/$1
 
 echo Creating subject as Disney protagonist...
 conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
-    --prompt "disney style animation of $1 person as protagonist in a disney film" \
+    --prompt "disney style animation  of one $1 person as protagonist in a disney film" \
     --name disney \
     --id $1 \
     --num 4 \
@@ -21,7 +21,7 @@ conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
 
 echo Creating subject as comic book superhero...
 conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
-    --prompt "cartoon of $1 person as comic book superhero" \
+    --prompt "cartoon of one $1 person as comic book superhero" \
     --name comicbook \
     --id $1 \
     --num 4 \
@@ -47,6 +47,14 @@ echo Creating subject as anime character...
 conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
     --prompt "anime style cartoon of $1 person as anime character" \
     --name anime \
+    --id $1 \
+    --num 4 \
+    --step $RETRAIN_STEP
+    
+echo Creating subject as Roy Lichtenstein poster...
+conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
+    --prompt "a Lichtenstein poster of $1 person in the style of Roy Lichtenstein" \
+    --name lichenstein \
     --id $1 \
     --num 4 \
     --step $RETRAIN_STEP
