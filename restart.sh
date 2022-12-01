@@ -3,7 +3,6 @@ set -x
 
 echo Updating and restarting daemons
 
-rm daemons/.processing
 sudo journalctl --vacuum-time=1s
 
 sudo cp daemons/*.sh /usr/bin/
