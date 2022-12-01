@@ -11,7 +11,7 @@ do
     else
         echo 'checking for new jobs'
         touch /home/ec2-user/rootvc/dreambooth/daemons/.processing
-        sudo ec2-user conda run -n db --no-capture-output python -m /home/ec2-user/rootvc/dreambooth/daemons/src/process.py
+        sudo -u ec2-user conda run -n db --no-capture-output python -m /home/ec2-user/rootvc/dreambooth/daemons/src/process.py
         rm /home/ec2-user/rootvc/dreambooth/daemons/.processing  
     fi
     
