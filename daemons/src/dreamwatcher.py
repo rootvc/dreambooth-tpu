@@ -10,6 +10,10 @@ def dirsInDirectory(dir_name: str):
 def tokenize(fullPath: str):
     return fullPath.split("/")[-1]
 
+def tokenToTimestamp(token: str):
+    charList = [(ord(t) - 97) for t in list(token)]
+    return "".join(map(str, charList))
+
 if __name__ == "__main__":
     inputList = dirsInDirectory(os.path.expandvars("$DREAMBOOTH_DIR/s3/input"))
     outputList = dirsInDirectory(os.path.expandvars("$DREAMBOOTH_DIR/s3/output"))    
@@ -21,10 +25,15 @@ if __name__ == "__main__":
         print("Found {} new directories".format(len(newDirs)))
 
         token = tokenize(newDirs[0])
+        timestamp = tokenToTimestamp(token)
         
         print(f"Found a new set of inputs for token {token}")
         os.system(os.path.expandvars(f"$DREAMBOOTH_DIR/train.sh {token}"))
         os.system(os.path.expandvars(f"$DREAMBOOTH_DIR/generate.sh {token}"))
         print(f"Finished generating images for {token}")
+        
+        print("Notifying user via SMS")
+        os.system(os.path.expandvars(f"conda run python $DREAMBOOTH_DIR/daemons/src/sms.py --file $DREAMBOOTH_DIR/s3/data/prompts.txt --timestamp {timestamp}"))
+        os.system(os.path.expandvars(f"conda run python src/sms.py"))
 
     exit(0)

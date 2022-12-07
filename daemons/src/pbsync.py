@@ -46,8 +46,6 @@ if __name__ == "__main__":
     for token in newTokens:
         timestamp = tokenToTimestamp(token)
         print(f"Found a new set of photobooth outputs for timestamp: {timestamp} (token: {token})")
-        # print(timestamp)
-        # print(token)
         os.system(os.path.expandvars(f"mkdir -p $DREAMBOOTH_DIR/s3/input/{token}"))
         os.system(os.path.expandvars(f"cp -R $DREAMBOOTH_DIR/s3/photobooth-input/{timestamp}*.jpg $DREAMBOOTH_DIR/s3/input/{token}/"))
         print(f"Finished copying photobooth output images into Dreambooth input images for {token}")

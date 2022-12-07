@@ -54,7 +54,11 @@ sudo systemctl status s3sync.service
 sudo systemctl status dreamwatcher.service
 sudo systemctl status pbsync.service
 
-echo You are ready to train!
+# Environment variables
+cp .env.example .env
+
+echo You're almost ready to train!
+echo Edit .env and insert your Twilio credentials to enable SMS
 echo (Optional) Run ./setup-optional.sh for memory performance improvement
 
 set -x
