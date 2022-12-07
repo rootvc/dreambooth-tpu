@@ -27,6 +27,9 @@ if __name__ == "__main__":
         token = tokenize(newDirs[0])
         timestamp = tokenToTimestamp(token)
         
+        print("Notifying user of initiation via SMS")
+        os.system(os.path.expandvars(f"conda run -n db python $DREAMBOOTH_DIR/daemons/src/sms.py --message initial --file $DREAMBOOTH_DIR/s3/data/prompts.tsv --timestamp {timestamp}"))
+        
         print(f"Found a new set of inputs for token {token}")
         os.system(os.path.expandvars(f"time $DREAMBOOTH_DIR/train.sh {token}"))
         os.system(os.path.expandvars(f"time $DREAMBOOTH_DIR/generate.sh {token}"))
@@ -35,7 +38,7 @@ if __name__ == "__main__":
         # Prime the SSR path by hitting the url once
         os.system(f"curl https://photobooth.root.vc/{token} > /dev/null")
         
-        print("Notifying user via SMS")
-        os.system(os.path.expandvars(f"conda run -n db python $DREAMBOOTH_DIR/daemons/src/sms.py --file $DREAMBOOTH_DIR/s3/data/prompts.tsv --timestamp {timestamp}"))
+        print("Notifying user of completion via SMS")
+        os.system(os.path.expandvars(f"conda run -n db python $DREAMBOOTH_DIR/daemons/src/sms.py --message final --file $DREAMBOOTH_DIR/s3/data/prompts.tsv --timestamp {timestamp}"))
 
     exit(0)
