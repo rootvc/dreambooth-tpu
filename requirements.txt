@@ -6,3 +6,4 @@ tensorboard
 modelcards
 twilio
 python-dotenv
+redis[hiredis]

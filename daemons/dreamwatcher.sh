@@ -1,16 +1,12 @@
 #!/bin/bash
 
 source ~/.bashrc
+cd $DREAMBOOTH_DIR
 
-while true
-do    
-    # Download metadata from photobooth
-    aws s3 cp s3://rootvc-dreambooth/sparkbooth/prompts.txt s3://rootvc-dreambooth/data/prompts.txt > /dev/null
-    aws s3 sync s3://rootvc-dreambooth/data $DREAMBOOTH_DIR/s3/data > /dev/null
-    mv $DREAMBOOTH_DIR/s3/data/prompts.txt $DREAMBOOTH_DIR/s3/data/prompts.tsv
-    
-    # Execute python script that checks for new inputs and processing
-    conda run -n db --no-capture-output python $DREAMBOOTH_DIR/daemons/src/dreamwatcher.py
-        
+while true; do
+    aws s3 sync s3://rootvc-dreambooth/photobooth-input ./s3/photobooth-input
+    aws s3 cp s3://rootvc-dreambooth/data/prompts.txt ./s3/data/prompts.tsv
+    conda run -n db --no-capture-output python daemons/src/process
+    aws s3 sync ./s3/output s3://rootvc-dreambooth/output
     sleep 10
 done
