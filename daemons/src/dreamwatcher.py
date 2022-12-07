@@ -32,7 +32,10 @@ if __name__ == "__main__":
         os.system(os.path.expandvars(f"$DREAMBOOTH_DIR/generate.sh {token}"))
         print(f"Finished generating images for {token}")
         
+        # Prime the SSR path by hitting the url once
+        os.system(f"wget https://photobooth.root.vc/{token} > /dev/null")
+        
         print("Notifying user via SMS")
-        os.system(os.path.expandvars(f"conda run python $DREAMBOOTH_DIR/daemons/src/sms.py --file $DREAMBOOTH_DIR/s3/data/prompts.tsv --timestamp {timestamp}"))
+        os.system(os.path.expandvars(f"conda run -n db python $DREAMBOOTH_DIR/daemons/src/sms.py --file $DREAMBOOTH_DIR/s3/data/prompts.tsv --timestamp {timestamp}"))
 
     exit(0)
