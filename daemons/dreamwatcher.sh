@@ -5,8 +5,8 @@ source ~/.bashrc
 while true
 do    
     # Download metadata from photobooth
-    aws s3 cp s3://rootvc-dreambooth/sparkbooth/prompts.txt s3://rootvc-dreambooth/data/prompts.txt
-    aws s3 sync s3://rootvc-dreambooth/data $DREAMBOOTH_DIR/s3/data
+    aws s3 cp s3://rootvc-dreambooth/sparkbooth/prompts.txt s3://rootvc-dreambooth/data/prompts.txt > /dev/null
+    aws s3 sync s3://rootvc-dreambooth/data $DREAMBOOTH_DIR/s3/data > /dev/null
     mv $DREAMBOOTH_DIR/s3/data/prompts.txt $DREAMBOOTH_DIR/s3/data/prompts.tsv
     
     # Execute python script that checks for new inputs and processing
