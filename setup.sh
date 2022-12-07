@@ -27,7 +27,7 @@ conda run -n db --no-capture-output huggingface-cli login
 git config --global credential.helper store
 
 # Making required directories
-mkdir -p s3 s3/class s3/models s3/input s3/output
+mkdir -p s3 s3/class s3/models s3/input s3/output s3/pb-output
 aws s3 sync s3://rootvc-dreambooth/class s3/class # Only needed to speed up first run
 aws s3 sync s3://rootvc-dreambooth/input s3/input # Start with up to date input history
 aws s3 sync s3://rootvc-dreambooth/output s3/output # Start with up to date output history (to prevent repeat jobs)
@@ -45,9 +45,14 @@ sudo systemctl start s3sync.service
 sudo systemctl enable dreamwatcher.service
 sudo systemctl start dreamwatcher.service
 
+# Setting up PBSync Service
+sudo systemctl enable pbsync.service
+sudo systemctl start pbsync.service
+
 # Show status of daemons
 sudo systemctl status s3sync.service
 sudo systemctl status dreamwatcher.service
+sudo systemctl status pbsync.service
 
 echo You are ready to train!
 echo (Optional) Run ./setup-optional.sh for memory performance improvement
