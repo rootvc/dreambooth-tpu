@@ -7,8 +7,8 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
-export STEPS=1000
-export INTERVAL=250
+export STEPS=600
+export INTERVAL=150
 
 mkdir -p $DREAMBOOTH_DIR/s3/input/$1
 time conda run -n db --no-capture-output \

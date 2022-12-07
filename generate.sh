@@ -5,7 +5,7 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
-export RETRAIN_STEP=750
+export RETRAIN_STEP=450
 echo Generating images for $1
 echo Transfer learning beginning at step: $STEP
 
@@ -27,18 +27,10 @@ conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
     --num 4 \
     --step $RETRAIN_STEP
 
-echo Creating subject as renaissance painting knight...
+echo Creating subject as Simpsons character...
 conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
-    --prompt "detailed oil painting high quality of $1 person in medieval knight armor" \
-    --name oilpainting \
-    --id $1 \
-    --num 4 \
-    --step $RETRAIN_STEP
-
-echo Creating subject in cubist style...
-conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
-    --prompt "cubist artwork of $1 person" \
-    --name cubist \
+    --prompt "a Simpsons cartoon drawing of $1 person in the style of the Simpsons by Matt Groenig" \
+    --name simpsons \
     --id $1 \
     --num 4 \
     --step $RETRAIN_STEP
@@ -50,11 +42,43 @@ conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
     --id $1 \
     --num 4 \
     --step $RETRAIN_STEP
-    
+
 echo Creating subject as Roy Lichtenstein poster...
 conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
     --prompt "a Lichtenstein poster of $1 person in the style of Roy Lichtenstein" \
     --name lichenstein \
+    --id $1 \
+    --num 4 \
+    --step $RETRAIN_STEP
+
+echo Creating subject as Hokusai painting...
+conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
+    --prompt "a painting of $1 person in the style of Hokusai" \
+    --name hokusai \
+    --id $1 \
+    --num 4 \
+    --step $RETRAIN_STEP
+
+echo Creating subject as an Andy Warhol print...
+conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
+    --prompt "a silk screen of $1 person in the style of Andy Warhol" \
+    --name warhol \
+    --id $1 \
+    --num 4 \
+    --step $RETRAIN_STEP
+
+echo Creating subject as a Lego figure...
+conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
+    --prompt "a realistic photo of a plastic lego figure of $1 person" \
+    --name lego \
+    --id $1 \
+    --num 4 \
+    --step $RETRAIN_STEP
+
+echo Creating subject as anime action hero...
+conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
+    --prompt "a Japanese anime drawing of $1 person fighting a pokemon" \
+    --name animeaction \
     --id $1 \
     --num 4 \
     --step $RETRAIN_STEP
