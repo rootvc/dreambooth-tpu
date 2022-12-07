@@ -36,6 +36,6 @@ if __name__ == "__main__":
         os.system(f"curl https://photobooth.root.vc/{token} > /dev/null")
         
         print("Notifying user via SMS")
-        os.system(os.path.expandvars(f"conda run -n db python $DREAMBOOTH_DIR/daemons/src/sms.py --file $DREAMBOOTH_DIR/s3/data/prompts.tsv --timestamp {timestamp}"))
+        os.system(f"export DREAMBOOTH_LAST_CUSTOMER_TIMESTAMP={timestamp}")
 
     exit(0)

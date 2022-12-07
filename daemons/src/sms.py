@@ -30,7 +30,7 @@ def main(args):
     data = []
     with open(args.file) as file:
         for row in csv.reader(file, delimiter="\t"):
-            if args.timestamp in row[0]:
+            if f"/{args.timestamp}.jpg" in row[0]:
                 data = row
     
     if data:

@@ -11,7 +11,7 @@ export STEPS=600
 export INTERVAL=150
 
 mkdir -p $DREAMBOOTH_DIR/s3/input/$1
-time conda run -n db --no-capture-output \
+conda run -n db --no-capture-output \
   accelerate launch --num_cpu_threads_per_process=96 $DREAMBOOTH_DIR/src/training.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \

@@ -27,13 +27,13 @@ conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
     --num 4 \
     --step $RETRAIN_STEP
 
-echo Creating subject as Simpsons character...
-conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
-    --prompt "a Simpsons cartoon drawing of $1 person in the style of the Simpsons by Matt Groenig" \
-    --name simpsons \
-    --id $1 \
-    --num 4 \
-    --step $RETRAIN_STEP
+# echo Creating subject as Simpsons character...
+# conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
+#     --prompt "a Simpsons cartoon drawing of $1 person in the style of the Simpsons by Matt Groenig" \
+#     --name simpsons \
+#     --id $1 \
+#     --num 4 \
+#     --step $RETRAIN_STEP
 
 echo Creating subject as anime character...
 conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
@@ -67,18 +67,34 @@ conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
     --num 4 \
     --step $RETRAIN_STEP
 
-echo Creating subject as a Lego figure...
-conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
-    --prompt "a realistic photo of a plastic lego figure of $1 person" \
-    --name lego \
-    --id $1 \
-    --num 4 \
-    --step $RETRAIN_STEP
+# echo Creating subject as a Lego figure...
+# conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
+#     --prompt "a realistic photo of a plastic lego figure of $1 person" \
+#     --name lego \
+#     --id $1 \
+#     --num 4 \
+#     --step $RETRAIN_STEP
 
 echo Creating subject as anime action hero...
 conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
-    --prompt "a Japanese anime drawing of $1 person fighting a pokemon" \
+    --prompt "a Japanese anime drawing of $1 person using ninja techniques" \
     --name animeaction \
+    --id $1 \
+    --num 4 \
+    --step $RETRAIN_STEP
+    
+echo Creating subject as a Studio Ghibli character...
+conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
+    --prompt "a cartoon drawing of $1 person in the style of a Studio Ghibli anime film" \
+    --name ghibli \
+    --id $1 \
+    --num 4 \
+    --step $RETRAIN_STEP
+    
+echo Creating subject as an oil painting...
+conda run -n db --no-capture-output python $DREAMBOOTH_DIR/src/inference.py \
+    --prompt "a realistic oil painting of $1 person wearing stylish middle ages attire" \
+    --name oilpaintingstylish \
     --id $1 \
     --num 4 \
     --step $RETRAIN_STEP
