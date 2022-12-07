@@ -10,7 +10,7 @@ do
     mv $DREAMBOOTH_DIR/s3/data/prompts.txt $DREAMBOOTH_DIR/s3/data/prompts.tsv
     
     # Execute python script that checks for new inputs and processing
-    time conda run -n db --no-capture-output python $DREAMBOOTH_DIR/daemons/src/dreamwatcher.py
+    conda run -n db --no-capture-output python $DREAMBOOTH_DIR/daemons/src/dreamwatcher.py
         
     sleep 10
 done

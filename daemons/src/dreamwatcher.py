@@ -28,8 +28,8 @@ if __name__ == "__main__":
         timestamp = tokenToTimestamp(token)
         
         print(f"Found a new set of inputs for token {token}")
-        os.system(os.path.expandvars(f"$DREAMBOOTH_DIR/train.sh {token}"))
-        os.system(os.path.expandvars(f"$DREAMBOOTH_DIR/generate.sh {token}"))
+        os.system(os.path.expandvars(f"time $DREAMBOOTH_DIR/train.sh {token}"))
+        os.system(os.path.expandvars(f"time $DREAMBOOTH_DIR/generate.sh {token}"))
         print(f"Finished generating images for {token}")
         
         # Prime the SSR path by hitting the url once
