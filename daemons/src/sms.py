@@ -6,9 +6,9 @@ from twilio.rest import Client
 from dotenv import load_dotenv, dotenv_values
 
 load_dotenv()
-account_sid = dotenv_values(".env")["TWILIO_ACCOUNT_SID"]
-auth_token = dotenv_values(".env")["TWILIO_AUTH_TOKEN"]
-messaging_service_sid = dotenv_values(".env")["TWILIO_MESSAGING_SERVICE_SID"]
+account_sid = dotenv_values(os.path.expandvars(f"$DREAMBOOTH_DIR/.env"))["TWILIO_ACCOUNT_SID"]
+auth_token = dotenv_values(os.path.expandvars(f"$DREAMBOOTH_DIR/.env"))["TWILIO_AUTH_TOKEN"]
+messaging_service_sid = dotenv_values(os.path.expandvars(f"$DREAMBOOTH_DIR/.env"))["TWILIO_MESSAGING_SERVICE_SID"]
 
 client = Client(account_sid, auth_token)
 
