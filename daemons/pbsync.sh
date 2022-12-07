@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 
 source ~/.bashrc
  
@@ -12,5 +11,3 @@ do
 
     sleep 10
 done
-
-set +x
