@@ -32,17 +32,20 @@ def main(args):
         for row in csv.reader(file, delimiter="\t"):
             if args.timestamp in row[0]:
                 data = row
-                
-    token = token_from_url(data[0])
-    phone = format_phone(data[5])
     
-    message = client.messages.create(
-        messaging_service_sid=messaging_service_sid,
-        body=f"Root Ventures Photobooth generated your AI images! Check them out here: https://photobooth.root.vc/{token}. Happy Holidays, and thanks for coming!",
-        to=phone
-    )
-
-    print(message.id)
+    if data:
+        token = token_from_url(data[0])
+        phone = format_phone(data[5])
+        
+        message = client.messages.create(
+            messaging_service_sid=messaging_service_sid,
+            body=f"Root Ventures Photobooth generated your AI images! Check them out here: https://photobooth.root.vc/{token}. Happy Holidays, and thanks for coming!",
+            to=phone
+        )
+    
+        print(f"Sent. Message SID: {message.sid}")
+    else:
+        print(f"Timestamp {args.timestamp} not found")
     
 if __name__ == "__main__":
     args = parser.parse_args()

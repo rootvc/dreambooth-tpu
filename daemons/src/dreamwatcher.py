@@ -33,7 +33,6 @@ if __name__ == "__main__":
         print(f"Finished generating images for {token}")
         
         print("Notifying user via SMS")
-        os.system(os.path.expandvars(f"conda run python $DREAMBOOTH_DIR/daemons/src/sms.py --file $DREAMBOOTH_DIR/s3/data/prompts.txt --timestamp {timestamp}"))
-        os.system(os.path.expandvars(f"conda run python src/sms.py"))
+        os.system(os.path.expandvars(f"conda run python $DREAMBOOTH_DIR/daemons/src/sms.py --file $DREAMBOOTH_DIR/s3/data/prompts.tsv --timestamp {timestamp}"))
 
     exit(0)
