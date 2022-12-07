@@ -11,9 +11,6 @@ do
     
     # Execute python script that checks for new inputs and processing
     time conda run -n db --no-capture-output python $DREAMBOOTH_DIR/daemons/src/dreamwatcher.py
-    
-    # Notify user via SMS
-    conda run -n db python $DREAMBOOTH_DIR/daemons/src/sms.py --file $DREAMBOOTH_DIR/s3/data/prompts.tsv --timestamp $DREAMBOOTH_LAST_CUSTOMER_TIMESTAMP
-    
+        
     sleep 10
 done
