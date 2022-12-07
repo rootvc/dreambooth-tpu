@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-journalctl -u dreamwatcher -aef
-
+journalctl -u dreamwatcher -ef

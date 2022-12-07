@@ -1,23 +1,27 @@
 #!/usr/bin/env bash
+set -e
 
 echo Learning stable diffusion model for $1 using Dreambooth...
 
 if [[ $# -eq 0 ]]; then
-    echo "ERROR: Provide an argument for the subject's unique identifier"
-    exit 1
+  echo "ERROR: Provide an argument for the subject's unique identifier"
+  exit 1
 fi
 
 export STEPS=600
 export INTERVAL=150
 
-mkdir -p $DREAMBOOTH_DIR/s3/input/$1
+cd $DREAMBOOTH_DIR
+mkdir -p ./input/$1
+cp ./s3/photobooth-input/$2*.jpg ./input/$1
+
 conda run -n db --no-capture-output \
-  accelerate launch --num_cpu_threads_per_process=96 $DREAMBOOTH_DIR/src/training.py \
+  accelerate launch --num_cpu_threads_per_process=96 ./src/training.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
-  --instance_data_dir="$DREAMBOOTH_DIR/s3/input/$1" \
-  --class_data_dir="$DREAMBOOTH_DIR/s3/class/" \
-  --output_dir="$DREAMBOOTH_DIR/models/" \
+  --instance_data_dir="./input/$1" \
+  --class_data_dir="./s3/class/" \
+  --output_dir="./models/" \
   --with_prior_preservation --prior_loss_weight=1.0 \
   --instance_prompt="photo of $1 person" \
   --class_prompt="photo of person" \
@@ -34,4 +38,3 @@ conda run -n db --no-capture-output \
   --num_class_images=300 \
   --max_train_steps=$STEPS \
   --save_interval=$INTERVAL
-  

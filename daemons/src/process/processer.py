@@ -2,7 +2,7 @@ import csv
 import os
 import subprocess
 
-import redis
+from redis import RedisCluster
 from sms import SMS
 from train import Trainer
 from utils import DreamboothDirMixin, filename_to_token
@@ -12,8 +12,11 @@ class Processer(DreamboothDirMixin):
     PROCESSED = "dreambooth:processed"
 
     def __init__(self):
-        self.r = redis.Redis(
-            host=os.environ["REDIS_HOST"], port=6379, db=0, decode_responses=True
+        self.r = RedisCluster(
+            host=os.environ["REDIS_HOST"],
+            port=6379,
+            ssl=True,
+            decode_responses=True,
         )
         self.prompts = csv.DictReader(
             open(f"{self.DREAMBOOTH_DIR}/s3/data/prompts.tsv", "r"),
@@ -21,6 +24,7 @@ class Processer(DreamboothDirMixin):
         )
 
     def unprocessed_tokens(self):
+        print("Checking for unprocessed tokens...")
         return [
             p
             for p in self.prompts
@@ -35,7 +39,7 @@ class Processer(DreamboothDirMixin):
     def run(self):
         for p in self.unprocessed_tokens():
             token = filename_to_token(p["filename"])
-            print(f"Processing {token}")
+            print(f"Processing {token} ({p['phone']})...")
             try:
                 self.r.sadd(self.PROCESSED, token)
                 self.generate_images(token, p["phone"])
