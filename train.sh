@@ -18,7 +18,6 @@ cp ./s3/photobooth-input/$2*.jpg ./input/$1
 conda run -n db --no-capture-output \
   accelerate launch diffusers/examples/dreambooth/train_dreambooth.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
-  # --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
   --instance_data_dir="./input/$1" \
   --class_data_dir="./s3/class/" \
   --output_dir="./models/" \
