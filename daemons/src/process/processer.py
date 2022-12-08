@@ -1,6 +1,7 @@
 import csv
 import os
 import subprocess
+from functools import cached_property
 
 from redis import RedisCluster
 from sms import SMS
@@ -23,6 +24,7 @@ class Processer(DreamboothDirMixin):
             delimiter="\t",
         )
 
+    @cached_property
     def unprocessed_tokens(self):
         print("Checking for unprocessed tokens...")
         return [
@@ -32,16 +34,24 @@ class Processer(DreamboothDirMixin):
         ]
 
     def generate_images(self, token: str, phone: str):
-        trainer = Trainer(token, SMS(phone))
+        trainer = Trainer(token)
         trainer.train()
         trainer.generate()
+        SMS(phone).send_final(token)
+
+    def notify_user(self, token: str, phone: str):
+        self.r.sadd(self.PROCESSED, token)
+        SMS(phone).send_initial(token)
 
     def run(self):
-        for p in self.unprocessed_tokens():
+        for p in self.unprocessed_tokens:
+            token = filename_to_token(p["filename"])
+            self.notify_user(token, p["phone"])
+
+        for p in self.unprocessed_tokens:
             token = filename_to_token(p["filename"])
             print(f"Processing {token} ({p['phone']})...")
             try:
-                self.r.sadd(self.PROCESSED, token)
                 self.generate_images(token, p["phone"])
             except subprocess.CalledProcessError as e:
                 self.r.srem(self.PROCESSED, token)
