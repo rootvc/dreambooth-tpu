@@ -82,7 +82,8 @@ data:
       target: ldm.data.base.Txt2ImgIterableBaseDataset
       params:
         file_path: "/home/ec2-user/rootvc/dreambooth/input/caccbcahbbfhca"
-
+        world_size: 1
+        rank: 0
 lightning:
   trainer:
     accelerator: "gpu"
