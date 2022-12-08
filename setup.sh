@@ -15,7 +15,7 @@ conda create -n "db" python=3.10 ipython
 git clone https://github.com/yasyf/diffusers
 git checkout stable-diffusion
 pushd diffusers
-conda run -n db pip install -e .
+conda run -n db --no-capture-output pip install -e .
 cd examples/dreambooth
 conda run -n db --no-capture-output pip install -r requirements.txt
 conda run -n db --no-capture-output pip install -U -r requirements_flax.txt

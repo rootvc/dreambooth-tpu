@@ -1,6 +1,5 @@
 import subprocess
 
-from sms import SMS
 from utils import DreamboothDirMixin, token_to_timestamp
 
 
