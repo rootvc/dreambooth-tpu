@@ -19,7 +19,6 @@ conda run -n db --no-capture-output \
   accelerate launch --num_cpu_threads_per_process=96 \
   diffusers/examples/dreambooth/train_dreambooth.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
-  --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
   --instance_data_dir="./input/$1" \
   --class_data_dir="./s3/class/" \
   --output_dir="./models/" \
@@ -27,8 +26,12 @@ conda run -n db --no-capture-output \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
   --train_batch_size=1 \
+  --gradient_accumulation_steps=2 \
   --learning_rate=5e-6 \
   --lr_scheduler="constant" \
+  --lr_warmup_steps=0 \
   --num_class_images=300 \
   --max_train_steps=$STEPS \
+  --use_8bit_adam \
+  --gradient_checkpointing \
   --mixed_precision=fp16
