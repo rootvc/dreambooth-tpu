@@ -4,9 +4,9 @@ set -x
 echo Building facebook/xformers
 echo This is a bit dicey on a lot of systems and requires install from source
 
-export TORCH_CUDA_ARCH_LIST=8.6 # I think this should be 11.7, but 8.6 seems to work
+export TORCH_CUDA_ARCH_LIST=ALL # I think this should be 11.7, but 8.6 seems to work
 export FORCE_CUDA=1
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=0,1,2,3
 export CUDACXX=${CUDA_INSTALL_PATH}/bin/nvcc
 
 conda install -n db ninja
