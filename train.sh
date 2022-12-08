@@ -29,7 +29,7 @@ conda run -n db --no-capture-output \
   --class_prompt="a photo of person" \
   --train_batch_size=2 \
   --train_text_encoder \
-  --gradient_accumulation_steps=2 \
+  --gradient_accumulation_steps=1 \
   --learning_rate=5e-6 \
   --lr_scheduler="constant" \
   --lr_warmup_steps=0 \
