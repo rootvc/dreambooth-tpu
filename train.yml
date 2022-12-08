@@ -82,15 +82,6 @@ data:
       target: ldm.data.base.Txt2ImgIterableBaseDataset
       params:
         file_path: "/home/ec2-user/rootvc/dreambooth/input/caccbcahbbfhca"
-        image_transforms:
-          - target: torchvision.transforms.Resize
-            params:
-              size: 512
-              interpolation: 3
-          - target: torchvision.transforms.RandomCrop
-            params:
-              size: 512
-          - target: torchvision.transforms.RandomHorizontalFlip
 
 lightning:
   trainer:
