@@ -30,7 +30,7 @@ class Processer(DreamboothDirMixin):
         return [
             p
             for p in self.prompts
-            if not self.r.sismember(self.PROCESSED, p["filename"])
+            if not self.r.sismember(self.PROCESSED, filename_to_token(p["filename"]))
         ]
 
     def generate_images(self, token: str, phone: str):
