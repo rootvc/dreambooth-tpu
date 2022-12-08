@@ -16,7 +16,8 @@ rm -rf ./models/*
 cp ./s3/photobooth-input/$2*.jpg ./input/$1
 
 conda run -n db --no-capture-output \
-  accelerate launch diffusers/examples/dreambooth/train_dreambooth.py \
+  accelerate launch --num_cpu_threads_per_process=96 \
+  diffusers/examples/dreambooth/train_dreambooth.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --instance_data_dir="./input/$1" \
   --class_data_dir="./s3/class/" \
@@ -34,5 +35,4 @@ conda run -n db --no-capture-output \
   --max_train_steps=$STEPS \
   --train_text_encoder \
   --use_8bit_adam \
-  --gradient_checkpointing \
-  --num_cpu_threads_per_process=96
+  --gradient_checkpointing
