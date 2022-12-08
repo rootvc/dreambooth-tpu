@@ -17,7 +17,7 @@ cp ./s3/photobooth-input/$2*.jpg ./input/$1
 
 conda run -n db --no-capture-output \
   accelerate launch --num_cpu_threads_per_process=96 \
-  diffusers/examples/dreambooth/train_dreambooth_flax.py \
+  diffusers/examples/dreambooth/train_dreambooth.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --instance_data_dir="./input/$1" \
   --class_data_dir="./s3/class/" \
@@ -27,8 +27,12 @@ conda run -n db --no-capture-output \
   --class_prompt="a photo of person" \
   --resolution=550 \
   --train_batch_size=1 \
+  --gradient_accumulation_steps=1 \
   --learning_rate=5e-6 \
   --lr_scheduler="constant" \
+  --lr_warmup_steps=0 \
   --num_class_images=300 \
   --max_train_steps=$STEPS \
-  --train_text_encoder
+  --train_text_encoder \
+  --use_8bit_adam \
+  --gradient_checkpointing
