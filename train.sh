@@ -18,8 +18,9 @@ cp ./s3/photobooth-input/$2*.jpg ./input/$1
 
 conda run -n db --no-capture-output \
   accelerate launch --num_cpu_threads_per_process=96 \
-  diffusers/examples/dreambooth/train_dreambooth_flax.py \
+  diffusers/examples/dreambooth/train_dreambooth.py \
   --pretrained_model_name_or_path="CompVis/stable-diffusion-v1-4" \
+  --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
   --instance_data_dir="./input/$1" \
   --class_data_dir="./s3/class/" \
   --output_dir="./models/" \
@@ -28,7 +29,12 @@ conda run -n db --no-capture-output \
   --class_prompt="a photo of person" \
   --train_batch_size=1 \
   --train_text_encoder \
+  --gradient_accumulation_steps=1 \
   --learning_rate=5e-6 \
   --lr_scheduler="constant" \
+  --lr_warmup_steps=0 \
   --num_class_images=300 \
-  --max_train_steps=$STEPS
+  --max_train_steps=$STEPS \
+  --use_8bit_adam \
+  --gradient_checkpointing \
+  --save_interval=$INTERVAL
