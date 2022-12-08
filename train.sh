@@ -9,6 +9,7 @@ if [[ $# -eq 0 ]]; then
 fi
 
 export STEPS=400
+export INTERVAL=150
 
 cd $DREAMBOOTH_DIR
 mkdir -p ./input/$1
@@ -34,4 +35,5 @@ conda run -n db --no-capture-output \
   --max_train_steps=$STEPS \
   --use_8bit_adam \
   --gradient_checkpointing \
-  --mixed_precision=bf16
+  --mixed_precision=bf16 \
+  --save_interval=$INTERVAL
