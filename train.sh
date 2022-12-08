@@ -26,7 +26,7 @@ conda run -n db --no-capture-output \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
   --resolution=550 \
-  --train_batch_size=4 \
+  --train_batch_size=1 \
   --learning_rate=5e-6 \
   --lr_scheduler="constant" \
   --num_class_images=300 \
