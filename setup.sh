@@ -12,7 +12,8 @@ conda create -n "db" python=3.10 ipython
 # Installing required packages
 # TODO: Try moving two of these into requirements.txt
 
-git clone https://github.com/huggingface/diffusers.git
+git clone https://github.com/yasyf/diffusers
+git checkout stable-diffusion
 pushd diffusers
 conda run -n db pip install -e .
 cd examples/dreambooth
@@ -21,6 +22,7 @@ popd
 
 conda run -n db --no-capture-output pip install -r requirements.txt
 conda run -n db --no-capture-output pip install bitsandbytes
+conda run -n db --no-capture-output pip install git+https://github.com/microsoft/DeepSpeed
 
 # Configuring accelerate
 # TODO: Can this be done non-interactively?
