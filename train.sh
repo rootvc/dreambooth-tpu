@@ -8,7 +8,7 @@ if [[ $# -eq 0 ]]; then
   exit 1
 fi
 
-export STEPS=800
+export STEPS=600
 
 cd $DREAMBOOTH_DIR
 mkdir -p ./input/$1
@@ -26,7 +26,7 @@ conda run -n db --no-capture-output \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
   --resolution=550 \
-  --train_batch_size=1 \
+  --train_batch_size=4 \
   --gradient_accumulation_steps=1 \
   --learning_rate=5e-6 \
   --lr_scheduler="constant" \
