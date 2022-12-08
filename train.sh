@@ -25,14 +25,12 @@ conda run -n db --no-capture-output \
   --with_prior_preservation --prior_loss_weight=1.0 \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
-  --resolution=550 \
-  --train_batch_size=4 \
+  --train_batch_size=1 \
   --gradient_accumulation_steps=1 \
   --learning_rate=5e-6 \
   --lr_scheduler="constant" \
   --lr_warmup_steps=0 \
   --num_class_images=300 \
   --max_train_steps=$STEPS \
-  --train_text_encoder \
   --use_8bit_adam \
   --gradient_checkpointing
