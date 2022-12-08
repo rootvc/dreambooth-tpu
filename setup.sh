@@ -52,9 +52,7 @@ sudo systemctl enable dreamwatcher.service
 sudo systemctl start dreamwatcher.service
 
 # Show status of daemons
-sudo systemctl status s3sync.service
 sudo systemctl status dreamwatcher.service
-sudo systemctl status pbsync.service
 
 # Environment variables
 cp .env.example .env
