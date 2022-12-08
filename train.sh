@@ -27,6 +27,7 @@ conda run -n db --no-capture-output \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
   --train_batch_size=2 \
+  --train_text_encoder \
   --gradient_accumulation_steps=2 \
   --learning_rate=5e-6 \
   --lr_scheduler="constant" \
