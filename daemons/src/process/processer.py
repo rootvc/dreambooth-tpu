@@ -53,6 +53,6 @@ class Processer(DreamboothDirMixin):
             print(f"Processing {token} ({p['phone']})...")
             try:
                 self.generate_images(token, p["phone"])
-            except subprocess.CalledProcessError as e:
+            except Exception as e:
                 self.r.srem(self.PROCESSED, token)
                 print(f"Error processing {p['filename']}: {e}")
