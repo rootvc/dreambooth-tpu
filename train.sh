@@ -8,7 +8,7 @@ if [[ $# -eq 0 ]]; then
   exit 1
 fi
 
-export STEPS=300
+export STEPS=400
 
 cd $DREAMBOOTH_DIR
 mkdir -p ./input/$1
@@ -25,7 +25,7 @@ conda run -n db --no-capture-output \
   --with_prior_preservation --prior_loss_weight=1.0 \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
-  --train_batch_size=1 \
+  --train_batch_size=2 \
   --gradient_accumulation_steps=2 \
   --learning_rate=5e-6 \
   --lr_scheduler="constant" \
@@ -34,4 +34,4 @@ conda run -n db --no-capture-output \
   --max_train_steps=$STEPS \
   --use_8bit_adam \
   --gradient_checkpointing \
-  --mixed_precision=fp16
+  --mixed_precision=bf16
