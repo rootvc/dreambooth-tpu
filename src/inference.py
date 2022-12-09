@@ -2,6 +2,7 @@ import argparse
 import os
 import time
 
+import jax
 import torch
 from accelerate import Accelerator
 from diffusers import FlaxStableDiffusionPipeline
@@ -61,6 +62,7 @@ def main():
                 params=params,
                 neg_prompt_ids=pipe.prepare_inputs("a realistic photo"),
                 jit=True,
+                prng_seed=jax.random.PRNGKey(0),
             ).images
 
         now = int(time.time() * 1000)
