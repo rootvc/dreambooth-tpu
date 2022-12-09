@@ -54,13 +54,14 @@ def main():
     names = set()
 
     with torch.inference_mode():
-        image_groups = pipe(  # type: ignore
-            prompt_ids=pipe.prepare_inputs(args.prompt),
-            params=params,
-            neg_prompt_ids=pipe.prepare_inputs("a realistic photo"),
-            num_images_per_prompt=args.num_images,
-            jit=True,
-        ).images
+        images = []
+        for i in range(args.num_images):
+            images[i] = pipe(  # type: ignore
+                prompt_ids=pipe.prepare_inputs(args.prompt),
+                params=params,
+                neg_prompt_ids=pipe.prepare_inputs("a realistic photo"),
+                jit=True,
+            ).images
 
         now = int(time.time() * 1000)
         for i, images in enumerate(image_groups):
