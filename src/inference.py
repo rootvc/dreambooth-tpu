@@ -4,7 +4,7 @@ import time
 
 import torch
 from accelerate import Accelerator
-from diffusers import StableDiffusionPipeline
+from diffusers import FlaxStableDiffusionPipeline
 
 
 def parse_args():
@@ -39,12 +39,13 @@ def main():
     args = parse_args()
 
     # modify the model path
-    pipe = StableDiffusionPipeline.from_pretrained(
+    pipe, _ = FlaxStableDiffusionPipeline.from_pretrained(
         os.path.expandvars(f"{args.model_dir}/{args.step}"),
         safety_checker=None,
         torch_dtype=torch.float16,
         from_flax=True,
-    ).to(device)
+    )
+    pipe = pipe.to(device)
 
     # enable xformers memory attention
     pipe.enable_xformers_memory_efficient_attention()
