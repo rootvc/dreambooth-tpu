@@ -14,8 +14,9 @@ echo Transfer learning beginning at step: $RETRAIN_STEP
 
 mkdir -p ./s3/output/$1
 
-echo Creating subject as Disney protagonist...
-conda run -n db --no-capture-output python ./src/inference.py \
+echo Creating subject as Disney protagonist..
+accelerate launch --num_cpu_threads_per_process=96 \
+    python ./src/inference.py \
     --prompt "disney style animation of one sks person as protagonist in a disney film" \
     --name disney \
     --id $1 \
