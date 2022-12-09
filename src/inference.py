@@ -8,9 +8,6 @@ from diffusers import DDIMScheduler, StableDiffusionPipeline
 
 accelerator = Accelerator()
 device = accelerator.device
-import sys
-
-print(sys.argv)
 
 parser = argparse.ArgumentParser("simple inference")
 parser.add_argument("--prompt", help="A text prompt for the inference model", type=str)
@@ -22,10 +19,11 @@ parser.add_argument(
 )
 parser.add_argument("--num-images", help="How many images to generate", type=int)
 parser.add_argument("--step", help="Step to begin transfer learning", type=int)
-args = parser.parse_args()
 
 
 if __name__ == "__main__":
+    args = parser.parse_args()
+
     # use DDIM scheduler, you can modify it to use other scheduler
     scheduler = DDIMScheduler(
         beta_start=0.00085,
