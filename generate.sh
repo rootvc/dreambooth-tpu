@@ -17,9 +17,10 @@ mkdir -p ./s3/output/$1
 echo Creating subject as Disney protagonist..
 accelerate launch --num_cpu_threads_per_process=96 \
     src/inference.py \
+    --model_dir="./models/" \
     --output_dir="./s3/output/" \
     --id $1 \
-    -num-images 4 \
+    --num-images 4 \
     --step $RETRAIN_STEP \
     --prompt "disney style animation of one sks person as protagonist in a disney film" \
     --prompt "cartoon of one sks person as comic book superhero" \

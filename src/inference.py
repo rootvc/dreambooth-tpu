@@ -9,12 +9,8 @@ from diffusers import DDIMScheduler, StableDiffusionPipeline
 
 def parse_args():
     parser = argparse.ArgumentParser("simple inference")
-    parser.add_argument(
-        "--output_dir",
-        type=str,
-        default="text-inversion-model",
-        help="The output directory where the model predictions and checkpoints will be written.",
-    )
+    parser.add_argument("--output_dir", type=str, required=True)
+    parser.add_argument("--model_dir", type=str, required=True)
     parser.add_argument(
         "--prompt",
         help="A text prompt for the inference model",
@@ -44,7 +40,7 @@ def main():
 
     # modify the model path
     pipe = StableDiffusionPipeline.from_pretrained(
-        os.path.expandvars(f"$DREAMBOOTH_DIR/models/{args.step}"),
+        os.path.expandvars(f"{args.model_dir}/{args.step}"),
         safety_checker=None,
         torch_dtype=torch.float16,
     ).to(device)
