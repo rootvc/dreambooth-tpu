@@ -29,4 +29,5 @@ accelerate launch --num_cpu_threads_per_process=96 \
   --learning_rate=5e-6 \
   --lr_scheduler="constant" \
   --num_class_images=300 \
-  --max_train_steps=$STEPS
+  --max_train_steps=$STEPS \
+  --mixed_precision=bf16
