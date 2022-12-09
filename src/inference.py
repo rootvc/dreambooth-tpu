@@ -54,9 +54,9 @@ def main():
     names = set()
 
     with torch.inference_mode():
-        images = []
+        image_groups = []
         for i in range(args.num_images):
-            images[i] = pipe(  # type: ignore
+            image_groups[i] = pipe(  # type: ignore
                 prompt_ids=pipe.prepare_inputs(args.prompt),
                 params=params,
                 neg_prompt_ids=pipe.prepare_inputs("a realistic photo"),
