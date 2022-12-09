@@ -57,11 +57,11 @@ def main():
     with torch.inference_mode():
         image_groups = []
         for i in range(args.num_images):
-            print(pipe.prepare_inputs(args.prompt))
+            print(params)
             image_groups[i] = pipe(  # type: ignore
                 prompt_ids=pipe.prepare_inputs(args.prompt),
                 params=params,
-                neg_prompt_ids=pipe.prepare_inputs("a realistic photo"),
+                neg_prompt_ids=[pipe.prepare_inputs("a realistic photo")],
                 jit=True,
                 prng_seed=jax.random.PRNGKey(0),
             ).images
