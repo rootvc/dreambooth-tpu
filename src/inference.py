@@ -5,6 +5,9 @@ import time
 import torch
 from accelerate import Accelerator
 from diffusers import FlaxStableDiffusionPipeline
+from jax.experimental.compilation_cache import compilation_cache as cc
+
+cc.initialize_cache(os.path.expanduser("~/.cache/jax/compilation_cache"))
 
 
 def parse_args():
@@ -45,9 +48,6 @@ def main():
         torch_dtype=torch.float16,
         from_flax=True,
     )
-
-    # enable xformers memory attention
-    pipe.enable_xformers_memory_efficient_attention()
 
     scheduler, pipe = accelerator.prepare(scheduler, pipe)  # type: ignore
 
