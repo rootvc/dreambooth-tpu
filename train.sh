@@ -8,7 +8,7 @@ if [[ $# -eq 0 ]]; then
   exit 1
 fi
 
-export STEPS=600
+export STEPS=450
 export INTERVAL=450
 
 cd $DREAMBOOTH_DIR
