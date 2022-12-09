@@ -6,79 +6,73 @@ import torch
 from accelerate import Accelerator
 from diffusers import DDIMScheduler, StableDiffusionPipeline
 
-accelerator = Accelerator()
-device = accelerator.device
 
-parser = argparse.ArgumentParser("simple inference")
-parser.add_argument("--prompt", help="A text prompt for the inference model", type=str)
-parser.add_argument(
-    "--name", help="A name for this prompt to use in the filename", type=str
-)
-parser.add_argument(
-    "--id", help="A unique identifier for this subject (person)", type=str
-)
-parser.add_argument("--num-images", help="How many images to generate", type=int)
-parser.add_argument("--step", help="Step to begin transfer learning", type=int)
-
-
-if __name__ == "__main__":
-    args = parser.parse_args()
-
-    # use DDIM scheduler, you can modify it to use other scheduler
-    scheduler = DDIMScheduler(
-        beta_start=0.00085,
-        beta_end=0.012,
-        beta_schedule="scaled_linear",
-        clip_sample=False,
-        set_alpha_to_one=True,
-        steps_offset=1,
+def parse_args():
+    parser = argparse.ArgumentParser("simple inference")
+    parser.add_argument(
+        "--output_dir",
+        type=str,
+        default="text-inversion-model",
+        help="The output directory where the model predictions and checkpoints will be written.",
     )
+    parser.add_argument(
+        "--prompt",
+        help="A text prompt for the inference model",
+        type=str,
+        action="append",
+        required=True,
+    )
+    parser.add_argument(
+        "--id",
+        help="A unique identifier for this subject (person)",
+        type=str,
+        required=True,
+    )
+    parser.add_argument(
+        "--num-images", help="How many images to generate", type=int, required=True
+    )
+    parser.add_argument(
+        "--step", help="Step to begin transfer learning", type=int, required=True
+    )
+    return parser.parse_args()
 
-    # Use proxies to help with fetching from HF
-    proxies = {
-        "http": "http://10.10.1.10:3128",
-        "https": "https://10.10.1.10:1080",
-    }
+
+def main():
+    accelerator = Accelerator()
+    device = accelerator.device
+    args = parse_args()
 
     # modify the model path
     pipe = StableDiffusionPipeline.from_pretrained(
         os.path.expandvars(f"$DREAMBOOTH_DIR/models/{args.step}"),
-        scheduler=scheduler,
         safety_checker=None,
         torch_dtype=torch.float16,
-        proxies=proxies,
     ).to(device)
 
     # enable xformers memory attention
     pipe.enable_xformers_memory_efficient_attention()
 
-    prompt = args.prompt
-    negative_prompt = ""
-    num_samples = args.num
-    guidance_scale = 7.5
-    num_inference_steps = 50
-    height = 512
-    width = 512
+    scheduler, pipe = accelerator.prepare(scheduler, pipe)  # type: ignore
 
-    scheduler, pipe = accelerator.prepare(scheduler, pipe)
+    names = set()
 
     with torch.inference_mode():
-        images = pipe(
-            prompt,
-            height=height,
-            width=width,
-            negative_prompt=negative_prompt,
-            num_images_per_prompt=num_samples,
-            num_inference_steps=num_inference_steps,
-            guidance_scale=guidance_scale,
+        image_groups = pipe(  # type: ignore
+            prompt=args.prompt,
+            negative_prompt="a realistic photo",
+            num_images_per_prompt=args.num_images,
         ).images
 
         now = int(time.time() * 1000)
-        count = 1
-        for image in images:
-            # save image to local directory
-            save_file = os.path.expandvars(
-                f"$DREAMBOOTH_DIR/s3/output/{args.id}/{now}_{args.id}_{args.name}_{count}.png"
-            )
-            image.save(save_file)
-            count += 1
+        for i, images in enumerate(image_groups):
+            prompt = args.prompt[i]
+            name = next(x for x in prompt.split(" ") if x not in names)
+            names.add(name)
+            for j, image in enumerate(images):
+                image.save(
+                    f"{args.output_dir}/{args.id}/{now}_{args.id}_{name}_{j}.png"
+                )
+
+
+if __name__ == "__main__":
+    main()
