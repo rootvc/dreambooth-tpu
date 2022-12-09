@@ -45,7 +45,6 @@ def main():
         torch_dtype=torch.float16,
         from_flax=True,
     )
-    pipe = pipe.to(device)
 
     # enable xformers memory attention
     pipe.enable_xformers_memory_efficient_attention()
