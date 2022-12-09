@@ -16,7 +16,7 @@ mkdir -p ./s3/output/$1
 
 echo Creating subject as Disney protagonist..
 accelerate launch --num_cpu_threads_per_process=96 -- \
-    python ./src/inference.py \
+    ./src/inference.py \
     --prompt "disney style animation of one sks person as protagonist in a disney film" \
     --name disney \
     --id $1 \
@@ -25,7 +25,7 @@ accelerate launch --num_cpu_threads_per_process=96 -- \
 
 echo Creating subject as comic book superhero...
 accelerate launch --num_cpu_threads_per_process=96 -- \
-    python ./src/inference/py \
+    ./src/inference.py \
     --prompt "cartoon of one sks person as comic book superhero" \
     --name comicbook \
     --id $1 \
@@ -34,7 +34,7 @@ accelerate launch --num_cpu_threads_per_process=96 -- \
 
 # echo Creating subject as Simpsons character...
 # accelerate launch --num_cpu_threads_per_process=96 -- \
-python ./src/inference/py
+./src/inference.py
 #     --prompt "a Simpsons cartoon drawing of sks person in the style of the Simpsons by Matt Groenig" \
 #     --name simpsons \
 #     --id $1 \
@@ -43,7 +43,7 @@ python ./src/inference/py
 
 echo Creating subject as anime character...
 accelerate launch --num_cpu_threads_per_process=96 -- \
-    python ./src/inference/py \
+    ./src/inference.py \
     --prompt "anime style cartoon of sks person as anime character" \
     --name anime \
     --id $1 \
@@ -52,7 +52,7 @@ accelerate launch --num_cpu_threads_per_process=96 -- \
 
 echo Creating subject as Roy Lichtenstein poster...
 accelerate launch --num_cpu_threads_per_process=96 -- \
-    python ./src/inference/py \
+    ./src/inference.py \
     --prompt "a Lichtenstein poster of sks person in the style of Roy Lichtenstein" \
     --name lichenstein \
     --id $1 \
@@ -61,7 +61,7 @@ accelerate launch --num_cpu_threads_per_process=96 -- \
 
 echo Creating subject as Hokusai painting...
 accelerate launch --num_cpu_threads_per_process=96 -- \
-    python ./src/inference/py \
+    ./src/inference.py \
     --prompt "a painting of sks person in the style of Hokusai" \
     --name hokusai \
     --id $1 \
@@ -70,7 +70,7 @@ accelerate launch --num_cpu_threads_per_process=96 -- \
 
 echo Creating subject as an Andy Warhol print...
 accelerate launch --num_cpu_threads_per_process=96 -- \
-    python ./src/inference/py \
+    ./src/inference.py \
     --prompt "a silk screen of sks person in the style of Andy Warhol" \
     --name warhol \
     --id $1 \
@@ -79,7 +79,7 @@ accelerate launch --num_cpu_threads_per_process=96 -- \
 
 echo Creating subject as a Lego figure...
 accelerate launch --num_cpu_threads_per_process=96 -- \
-    python ./src/inference/py \
+    ./src/inference.py \
     --prompt "a realistic photo of sks person made from lego" \
     --name lego \
     --id $1 \
@@ -88,7 +88,7 @@ accelerate launch --num_cpu_threads_per_process=96 -- \
 
 echo Creating subject as anime action hero...
 accelerate launch --num_cpu_threads_per_process=96 -- \
-    python ./src/inference/py \
+    ./src/inference.py \
     --prompt "a Japanese anime drawing of sks person using ninja techniques" \
     --name animeaction \
     --id $1 \
@@ -97,7 +97,7 @@ accelerate launch --num_cpu_threads_per_process=96 -- \
 
 echo Creating subject as a Studio Ghibli character...
 accelerate launch --num_cpu_threads_per_process=96 -- \
-    python ./src/inference/py \
+    ./src/inference.py \
     --prompt "a cartoon drawing of sks person in the style of a Studio Ghibli anime film" \
     --name ghibli \
     --id $1 \
@@ -106,7 +106,7 @@ accelerate launch --num_cpu_threads_per_process=96 -- \
 
 echo Creating subject as an oil painting...
 accelerate launch --num_cpu_threads_per_process=96 -- \
-    python ./src/inference/py \
+    ./src/inference.py \
     --prompt "a realistic oil painting of sks person wearing stylish middle ages attire" \
     --name oilpaintingstylish \
     --id $1 \
