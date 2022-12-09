@@ -31,4 +31,5 @@ accelerate launch --num_cpu_threads_per_process=96 \
   --lr_scheduler="constant" \
   --num_class_images=300 \
   --max_train_steps=$STEPS \
-  --mixed_precision=bf16
+  --mixed_precision=bf16 \
+  -save_steps=$INTERVAL
