@@ -8,6 +8,9 @@ from diffusers import DDIMScheduler, StableDiffusionPipeline
 
 accelerator = Accelerator()
 device = accelerator.device
+import sys
+
+print(sys.argv)
 
 parser = argparse.ArgumentParser("simple inference")
 parser.add_argument("--prompt", help="A text prompt for the inference model", type=str)
