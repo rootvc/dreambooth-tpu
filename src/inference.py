@@ -42,22 +42,24 @@ def main():
     args = parse_args()
 
     # modify the model path
-    pipe, _ = FlaxStableDiffusionPipeline.from_pretrained(
+    pipe, params = FlaxStableDiffusionPipeline.from_pretrained(
         os.path.expandvars(f"{args.model_dir}/{args.step}"),
         safety_checker=None,
         torch_dtype=torch.float16,
         from_flax=True,
     )
 
-    pipe = accelerator.prepare(pipe)  # type: ignore
+    pipe, params = accelerator.prepare(pipe, params)  # type: ignore
 
     names = set()
 
     with torch.inference_mode():
         image_groups = pipe(  # type: ignore
-            prompt=args.prompt,
-            negative_prompt="a realistic photo",
+            prompt_ids=pipe.prepare_inputs(args.prompt),
+            params=params,
+            neg_prompt_ids=pipe.prepare_inputs("a realistic photo"),
             num_images_per_prompt=args.num_images,
+            jit=True,
         ).images
 
         now = int(time.time() * 1000)
