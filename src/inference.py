@@ -3,7 +3,11 @@ import os
 import time
 
 import torch
+from accelerate import Accelerator
 from diffusers import DDIMScheduler, StableDiffusionPipeline
+
+accelerator = Accelerator()
+device = accelerator.device
 
 parser = argparse.ArgumentParser("simple inference")
 parser.add_argument("--prompt", help="A text prompt for the inference model", type=str)
@@ -17,10 +21,6 @@ parser.add_argument("--num-images", help="How many images to generate", type=int
 parser.add_argument("--step", help="Step to begin transfer learning", type=int)
 args = parser.parse_args()
 
-from accelerate import Accelerator
-
-accelerator = Accelerator()
-device = accelerator.device
 
 if __name__ == "__main__":
     # use DDIM scheduler, you can modify it to use other scheduler
