@@ -49,7 +49,7 @@ def main():
         from_flax=True,
     )
 
-    scheduler, pipe = accelerator.prepare(scheduler, pipe)  # type: ignore
+    pipe = accelerator.prepare(pipe)  # type: ignore
 
     names = set()
 
