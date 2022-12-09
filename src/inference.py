@@ -17,7 +17,10 @@ parser.add_argument("--num-images", help="How many images to generate", type=int
 parser.add_argument("--step", help="Step to begin transfer learning", type=int)
 args = parser.parse_args()
 
-device = "cuda"
+from accelerate import Accelerator
+
+accelerator = Accelerator()
+device = accelerator.device
 
 if __name__ == "__main__":
     # use DDIM scheduler, you can modify it to use other scheduler
@@ -56,7 +59,9 @@ if __name__ == "__main__":
     height = 512
     width = 512
 
-    with torch.autocast("cuda"), torch.inference_mode():
+    scheduler, pipe = accelerator.prepare(scheduler, pipe)
+
+    with torch.inference_mode():
         images = pipe(
             prompt,
             height=height,
