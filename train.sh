@@ -9,7 +9,7 @@ if [[ $# -eq 0 ]]; then
 fi
 
 export STEPS=600
-export INTERVAL=150
+export INTERVAL=450
 
 cd $DREAMBOOTH_DIR
 mkdir -p ./input/$1
