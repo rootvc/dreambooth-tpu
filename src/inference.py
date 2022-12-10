@@ -40,8 +40,8 @@ def parse_args():
 
 
 def main():
-    accelerator = Accelerator()
-    device = accelerator.device
+    # accelerator = Accelerator()
+    # device = accelerator.device
     args = parse_args()
 
     # modify the model path
@@ -52,7 +52,7 @@ def main():
         from_flax=True,
     )
 
-    pipe, params = accelerator.prepare(pipe, params)  # type: ignore
+    # pipe, params = accelerator.prepare(pipe, params)  # type: ignore
 
     names = set()
 
