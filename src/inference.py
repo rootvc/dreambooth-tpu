@@ -3,6 +3,7 @@ import os
 import time
 
 import jax
+import numpy as np
 import torch
 from diffusers import FlaxStableDiffusionPipeline
 from flax.jax_utils import replicate
@@ -56,7 +57,12 @@ def main():
         for i in range(args.num_images):
             image_groups[i] = pipe(  # type: ignore
                 prompt_ids=shard(
-                    [pipe.prepare_inputs([p] * jax.device_count()) for p in args.prompt]
+                    np.array(
+                        [
+                            pipe.prepare_inputs([p] * jax.device_count())
+                            for p in args.prompt
+                        ]
+                    )
                 ),
                 params=replicate(params),
                 # neg_prompt_ids=shard(
