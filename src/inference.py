@@ -4,7 +4,6 @@ import time
 
 import jax
 import torch
-from accelerate import Accelerator
 from diffusers import FlaxStableDiffusionPipeline
 from flax.jax_utils import replicate
 from flax.training.common_utils import shard
@@ -40,8 +39,6 @@ def parse_args():
 
 
 def main():
-    # accelerator = Accelerator()
-    # device = accelerator.device
     args = parse_args()
 
     # modify the model path
@@ -52,17 +49,13 @@ def main():
         from_flax=True,
     )
 
-    # pipe, params = accelerator.prepare(pipe, params)  # type: ignore
-
     names = set()
 
     with torch.inference_mode():
         image_groups = []
         for i in range(args.num_images):
             image_groups[i] = pipe(  # type: ignore
-                prompt_ids=shard(
-                    pipe.prepare_inputs([args.prompt[0]] * jax.device_count())
-                ),
+                prompt_ids=shard(pipe.prepare_inputs(args.prompt * jax.device_count())),
                 params=replicate(params),
                 # neg_prompt_ids=shard(
                 #     pipe.prepare_inputs(["a realistic photo"] * jax.device_count())
