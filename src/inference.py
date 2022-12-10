@@ -6,6 +6,8 @@ import jax
 import torch
 from accelerate import Accelerator
 from diffusers import FlaxStableDiffusionPipeline
+from flax.jax_utils import replicate
+from flax.training.common_utils import shard
 from jax.experimental.compilation_cache import compilation_cache as cc
 
 cc.initialize_cache(os.path.expanduser("~/.cache/jax/compilation_cache"))
@@ -57,13 +59,14 @@ def main():
     with torch.inference_mode():
         image_groups = []
         for i in range(args.num_images):
-            print(params)
             image_groups[i] = pipe(  # type: ignore
-                prompt_ids=pipe.prepare_inputs(args.prompt),
-                params=params,
-                neg_prompt_ids=[pipe.prepare_inputs("a realistic photo")],
+                prompt_ids=shard(pipe.prepare_inputs(args.prompt * jax.device_count())),
+                params=replicate(params),
+                neg_prompt_ids=shard(
+                    pipe.prepare_inputs(["a realistic photo"] * jax.device_count())
+                ),
                 jit=True,
-                prng_seed=jax.random.PRNGKey(0),
+                prng_seed=jax.random.split(jax.random.PRNGKey(0), 8),
             ).images
 
         now = int(time.time() * 1000)
