@@ -55,15 +55,19 @@ def main():
     with torch.inference_mode():
         image_groups = []
         for i, prompt in enumerate(args.prompt):
-            image_groups[i] = pipe(  # type: ignore
-                prompt_ids=shard(pipe.prepare_inputs([prompt] * jax.device_count())),
-                params=replicate(params),
-                neg_prompt_ids=shard(
-                    pipe.prepare_inputs(["a realistic photo"] * jax.device_count())
-                ),
-                jit=True,
-                prng_seed=jax.random.split(jax.random.PRNGKey(0), 8),
-            ).images
+            image_groups.append(
+                pipe(  # type: ignore
+                    prompt_ids=shard(
+                        pipe.prepare_inputs([prompt] * jax.device_count())
+                    ),
+                    params=replicate(params),
+                    neg_prompt_ids=shard(
+                        pipe.prepare_inputs(["a realistic photo"] * jax.device_count())
+                    ),
+                    jit=True,
+                    prng_seed=jax.random.split(jax.random.PRNGKey(0), 8),
+                ).images
+            )
             print(image_groups[i].shape)
 
         now = int(time.time() * 1000)
