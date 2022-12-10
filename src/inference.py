@@ -62,9 +62,9 @@ def main():
             image_groups[i] = pipe(  # type: ignore
                 prompt_ids=shard(pipe.prepare_inputs(args.prompt * jax.device_count())),
                 params=replicate(params),
-                neg_prompt_ids=shard(
-                    pipe.prepare_inputs(["a realistic photo"] * jax.device_count())
-                ),
+                # neg_prompt_ids=shard(
+                #     pipe.prepare_inputs(["a realistic photo"] * jax.device_count())
+                # ),
                 jit=True,
                 prng_seed=jax.random.split(jax.random.PRNGKey(0), 8),
             ).images
