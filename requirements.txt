@@ -6,5 +6,5 @@ modelcards
 twilio
 python-dotenv
 redis[hiredis]
-deepseed
+deepspeed
 ninja

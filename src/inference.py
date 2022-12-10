@@ -56,7 +56,9 @@ def main():
         image_groups = []
         for i in range(args.num_images):
             image_groups[i] = pipe(  # type: ignore
-                prompt_ids=shard(replicate(pipe.prepare_inputs(["foo", "bar"]))),
+                prompt_ids=shard(
+                    np.repeat(pipe.prepare_inputs(["foo", "bar"]), jax.device_count())
+                ),
                 params=replicate(params),
                 # neg_prompt_ids=shard(
                 #     pipe.prepare_inputs(["a realistic photo"] * jax.device_count())
