@@ -57,7 +57,6 @@ def main():
         beta_start=0.00085,
         beta_end=0.012,
         beta_schedule="scaled_linear",
-        clip_sample=False,
         set_alpha_to_one=True,
         steps_offset=1,
     )
