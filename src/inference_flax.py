@@ -69,6 +69,7 @@ def main():
         torch_dtype=torch.float16,
         from_flax=True,
     )
+    params["scheduler"] = scheduler.create_state()
 
     names = set()
     device_count = jax.device_count()
