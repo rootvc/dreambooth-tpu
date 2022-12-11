@@ -9,7 +9,7 @@ export PATH=~/.local/bin${PATH:+:${PATH}}
 echo 'export PATH=~/.local/bin${PATH:+:${PATH}}' >>~/.bashrc
 
 export XRT_TPU_CONFIG="localservice;0;localhost:51011"
-echo "export XRT_TPU_CONFIG=$XRT_TPU_CONFIG" >>~/.bashrc
+echo "export XRT_TPU_CONFIG='$XRT_TPU_CONFIG'" >>~/.bashrc
 
 # Installing required packages
 
