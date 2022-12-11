@@ -8,8 +8,8 @@ if [[ $# -eq 0 ]]; then
   exit 1
 fi
 
-export STEPS=800
-export INTERVAL=800
+export STEPS=600
+export INTERVAL=600
 
 cd $DREAMBOOTH_DIR
 mkdir -p ./input/$1
@@ -27,7 +27,7 @@ accelerate launch --num_cpu_threads_per_process=96 \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
   --train_batch_size=2 \
-  --learning_rate=1e-6 \
+  --learning_rate=2e-6 \
   --train_text_encoder \
   --lr_scheduler="constant" \
   --num_class_images=300 \

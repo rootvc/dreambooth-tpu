@@ -81,7 +81,7 @@ def main():
             params=replicate(params),
             jit=True,
             prng_seed=jax.random.split(jax.random.PRNGKey(0), 8),
-            num_inference_steps=100,
+            num_inference_steps=75,
         ).images
         pil = pipe.numpy_to_pil(
             np.asarray(images.reshape((device_count,) + images.shape[-3:]))
