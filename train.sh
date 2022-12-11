@@ -35,6 +35,7 @@ accelerate launch --num_cpu_threads_per_process=96 \
   --lr_warmup_steps=0 \
   --num_class_images=300 \
   --max_train_steps=$STEPS \
+  --use_8bit_adam \
   --gradient_checkpointing \
   --mixed_precision=bf16 \
   --save_interval=$INTERVAL
