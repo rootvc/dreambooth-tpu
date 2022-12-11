@@ -79,9 +79,6 @@ def main():
         images = pipe(  # type: ignore
             prompt_ids=shard(pipe.prepare_inputs([prompt] * device_count)),
             params=replicate(params),
-            neg_prompt_ids=shard(
-                pipe.prepare_inputs(["a realistic photo"] * device_count)
-            ),
             jit=True,
             prng_seed=jax.random.split(jax.random.PRNGKey(0), 8),
         ).images
