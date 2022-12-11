@@ -27,7 +27,7 @@ accelerate launch --num_cpu_threads_per_process=96 --dynamo_backend=ofi \
     --prompt "anime style cartoon of sks person as anime character" \
     --prompt "a painting of sks person in the style of Hokusai" \
     --prompt "a silk screen of sks person in the style of Andy Warhol" \
-    --prompt "a realistic photo of sks person made from lego" \
+    --prompt "a realistic rendering of one sks person made from lego" \
     --prompt "a Japanese anime drawing of sks person using ninja techniques" \
     --prompt "a cartoon drawing of sks person in the style of a Studio Ghibli anime film" \
     --prompt "a realistic oil painting of sks person wearing stylish middle ages attire"
