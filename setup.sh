@@ -2,22 +2,21 @@
 set -x
 
 # IMPORTANT: this script must be run while current working directory is the Dreambooth git repo
-export DREAMBOOTH_DIR=`pwd`
-echo 'export DREAMBOOTH_DIR'=$DREAMBOOTH_DIR >> ~/.bashrc
+export DREAMBOOTH_DIR=$(pwd)
+echo 'export DREAMBOOTH_DIR'=$DREAMBOOTH_DIR >>~/.bashrc
 
 export PATH=~/.local/bin${PATH:+:${PATH}}
-echo 'export PATH=~/.local/bin${PATH:+:${PATH}}' >> ~/.bashrc
-
+echo 'export PATH=~/.local/bin${PATH:+:${PATH}}' >>~/.bashrc
 
 # Installing required packages
 
 git clone https://github.com/yasyf/diffusers
 pushd diffusers
-  git checkout stable-diffusion
-  pip install -e .
-  cd examples/dreambooth
-  pip install -r requirements.txt
-  pip install -U -r requirements_flax.txt
+git checkout stable-diffusion
+pip install -e .
+cd examples/dreambooth
+pip install -r requirements.txt
+pip install -U -r requirements_flax.txt
 popd
 
 pip install -r requirements.txt
@@ -45,10 +44,12 @@ unzip awscliv2.zip
 sudo ./aws/install
 rm -rf awscliv2.zip ./aws
 
+pip install markupsafe==2.0.1
+
 # Making required directories
 mkdir -p s3 s3/class s3/models s3/input s3/output s3/photobooth-input s3/data
-aws s3 sync s3://rootvc-dreambooth/class s3/class # Only needed to speed up first run
-aws s3 sync s3://rootvc-dreambooth/input s3/input # Start with up to date input history
+aws s3 sync s3://rootvc-dreambooth/class s3/class   # Only needed to speed up first run
+aws s3 sync s3://rootvc-dreambooth/input s3/input   # Start with up to date input history
 aws s3 sync s3://rootvc-dreambooth/output s3/output # Start with up to date output history (to prevent repeat jobs)
 
 # Setting up services
@@ -66,8 +67,4 @@ sudo systemctl status dreamwatcher.service
 # Environment variables
 cp .env.example .env
 
-echo You're almost ready to train!
-echo Edit .env and insert your Twilio credentials to enable SMS
-echo (Optional) Run ./setup-optional.sh for memory performance improvement
-
-set -x
+exec bash --login
