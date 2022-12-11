@@ -16,6 +16,8 @@ mkdir -p ./input/$1
 rm -rf ./models/*
 cp ./s3/photobooth-input/$2*.jpg ./input/$1
 
+# python3 -m torch_xla.core.xrt_run_server --port 51011 >/dev/null 2>&1
+
 accelerate launch --num_cpu_threads_per_process=96 \
   diffusers/examples/dreambooth/train_dreambooth.py \
   --pretrained_model_name_or_path="stabilityai/stable-diffusion-2-1" \
@@ -33,7 +35,6 @@ accelerate launch --num_cpu_threads_per_process=96 \
   --lr_warmup_steps=0 \
   --num_class_images=300 \
   --max_train_steps=$STEPS \
-  --use_8bit_adam \
   --gradient_checkpointing \
   --mixed_precision=bf16 \
   --save_interval=$INTERVAL
