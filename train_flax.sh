@@ -19,6 +19,7 @@ cp ./s3/photobooth-input/$2*.jpg ./input/$1
 accelerate launch --num_cpu_threads_per_process=96 \
   diffusers/examples/dreambooth/train_dreambooth_flax.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
+  --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
   --revision="bf16" \
   --instance_data_dir="./input/$1" \
   --class_data_dir="./s3/class/" \
@@ -26,8 +27,8 @@ accelerate launch --num_cpu_threads_per_process=96 \
   --with_prior_preservation --prior_loss_weight=1.0 \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
-  --train_batch_size=2 \
-  --learning_rate=2e-6 \
+  --train_batch_size=1 \
+  --learning_rate=1e-6 \
   --train_text_encoder \
   --lr_scheduler="constant" \
   --num_class_images=300 \
