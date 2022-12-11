@@ -70,7 +70,6 @@ def main():
         dtype=jax.numpy.bfloat16,
     )
     params["scheduler"] = scheduler.create_state()
-    params = pipe.unet.to_bf16(params)
 
     names = set()
     device_count = jax.device_count()
