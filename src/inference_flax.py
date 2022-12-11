@@ -4,7 +4,7 @@ import os
 import time
 
 import jax
-import jax.numpy as np
+import numpy as np
 import torch
 from diffusers import FlaxDDIMScheduler, FlaxStableDiffusionPipeline
 from flax.jax_utils import replicate
@@ -67,7 +67,7 @@ def main():
         scheduler=scheduler,
         safety_checker=None,
         from_flax=True,
-        dtype=np.bfloat16,
+        dtype=jax.numpy.bfloat16,
     )
     params["scheduler"] = scheduler.create_state()
     params = pipe.unet.to_bf16(params)
