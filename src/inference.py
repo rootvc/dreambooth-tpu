@@ -51,24 +51,24 @@ def main():
     )
 
     names = set()
+    device_count = jax.device_count()
 
     with torch.inference_mode():
         image_groups = []
         for i, prompt in enumerate(args.prompt):
-            image_groups.append(
-                pipe(  # type: ignore
-                    prompt_ids=shard(
-                        pipe.prepare_inputs([prompt] * jax.device_count())
-                    ),
-                    params=replicate(params),
-                    neg_prompt_ids=shard(
-                        pipe.prepare_inputs(["a realistic photo"] * jax.device_count())
-                    ),
-                    jit=True,
-                    prng_seed=jax.random.split(jax.random.PRNGKey(0), 8),
-                ).images
+            images = pipe(  # type: ignore
+                prompt_ids=shard(pipe.prepare_inputs([prompt] * device_count)),
+                params=replicate(params),
+                neg_prompt_ids=shard(
+                    pipe.prepare_inputs(["a realistic photo"] * device_count)
+                ),
+                jit=True,
+                prng_seed=jax.random.split(jax.random.PRNGKey(0), 8),
+            ).images
+            pil = pipe.numpy_to_pil(
+                np.asarray(images.reshape((device_count,) + images.shape[-3:]))
             )
-            print(image_groups[i].shape)
+            image_groups.append(pil)
 
         now = int(time.time() * 1000)
         for i, images in enumerate(image_groups):
@@ -76,6 +76,7 @@ def main():
             name = next(x for x in prompt.split(" ") if x not in names)
             names.add(name)
             for j, image in enumerate(images):
+
                 image.save(
                     f"{args.output_dir}/{args.id}/{now}_{args.id}_{name}_{j}.png"
                 )
