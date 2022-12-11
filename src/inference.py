@@ -1,7 +1,7 @@
 import argparse
+import functools
 import os
 import time
-from typing import Literal
 
 import jax
 import numpy as np
@@ -10,7 +10,6 @@ from diffusers import FlaxStableDiffusionPipeline
 from flax.jax_utils import replicate
 from flax.training.common_utils import shard
 from jax.experimental.compilation_cache import compilation_cache as cc
-from jax.lax import scan
 
 cc.initialize_cache(os.path.expanduser("~/.cache/jax/compilation_cache"))
 
@@ -41,6 +40,16 @@ def parse_args():
     return parser.parse_args()
 
 
+def inference_mode(f):
+    @functools.wraps(f)
+    def wrapper(*args, **kwargs):
+        with torch.inference_mode():
+            return f(*args, **kwargs)
+
+    return wrapper
+
+
+@inference_mode
 def main():
     args = parse_args()
 
@@ -55,7 +64,8 @@ def main():
     names = set()
     device_count = jax.device_count()
 
-    def gen(_: Literal[0], prompt: str):
+    image_groups = []
+    for i, prompt in enumerate(args.prompt):
         images = pipe(  # type: ignore
             prompt_ids=shard(pipe.prepare_inputs([prompt] * device_count)),
             params=replicate(params),
@@ -68,20 +78,16 @@ def main():
         pil = pipe.numpy_to_pil(
             np.asarray(images.reshape((device_count,) + images.shape[-3:]))
         )
-        return 0, pil
+        image_groups.append(pil)
 
-    with torch.inference_mode():
-        _, image_groups = scan(gen, 0, args.prompt)
+    now = int(time.time() * 1000)
+    for i, images in enumerate(image_groups):
+        prompt = args.prompt[i]
+        name = next(x for x in prompt.split(" ") if x not in names)
+        names.add(name)
+        for j, image in enumerate(images):
 
-        now = int(time.time() * 1000)
-        for i, images in enumerate(image_groups):
-            prompt = args.prompt[i]
-            name = next(x for x in prompt.split(" ") if x not in names)
-            names.add(name)
-            for j, image in enumerate(images):
-                image.save(
-                    f"{args.output_dir}/{args.id}/{now}_{args.id}_{name}_{j}.png"
-                )
+            image.save(f"{args.output_dir}/{args.id}/{now}_{args.id}_{name}_{j}.png")
 
 
 if __name__ == "__main__":
