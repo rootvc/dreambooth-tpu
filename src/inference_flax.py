@@ -6,7 +6,7 @@ import time
 import jax
 import numpy as np
 import torch
-from diffusers import FlaxStableDiffusionPipeline
+from diffusers import FlaxDDIMScheduler, FlaxStableDiffusionPipeline
 from flax.jax_utils import replicate
 from flax.training.common_utils import shard
 from jax.experimental.compilation_cache import compilation_cache as cc
@@ -53,9 +53,19 @@ def inference_mode(f):
 def main():
     args = parse_args()
 
+    scheduler = FlaxDDIMScheduler(
+        beta_start=0.00085,
+        beta_end=0.012,
+        beta_schedule="scaled_linear",
+        clip_sample=False,
+        set_alpha_to_one=True,
+        steps_offset=1,
+    )
+
     # modify the model path
     pipe, params = FlaxStableDiffusionPipeline.from_pretrained(
         os.path.expandvars(f"{args.model_dir}/{args.step}"),
+        scheduler=scheduler,
         safety_checker=None,
         torch_dtype=torch.float16,
         from_flax=True,
