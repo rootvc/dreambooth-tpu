@@ -4,7 +4,7 @@ import os
 import time
 
 import jax
-import numpy as np
+import jax.numpy as np
 import torch
 from diffusers import FlaxDDIMScheduler, FlaxStableDiffusionPipeline
 from flax.jax_utils import replicate
@@ -66,16 +66,21 @@ def main():
         os.path.expandvars(f"{args.model_dir}/{args.step}"),
         scheduler=scheduler,
         safety_checker=None,
-        torch_dtype=torch.float16,
         from_flax=True,
+        dtype=np.bfloat16,
     )
     params["scheduler"] = scheduler.create_state()
+    params = pipe.unet.to_bf16(params)
 
     names = set()
     device_count = jax.device_count()
 
     image_groups = []
-    for i, prompt in enumerate(args.prompt):
+    for i, prompt_raw in enumerate(args.prompt):
+        prompt = (
+            f"perfectly-centered-portrait of {prompt_raw}"
+            ", intricate, highly detailed, digital painting, artstation, glamor pose, concept art, smooth, sharp focus, illustration"
+        )
         images = pipe(  # type: ignore
             prompt_ids=shard(pipe.prepare_inputs([prompt] * device_count)),
             params=replicate(params),

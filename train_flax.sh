@@ -27,7 +27,7 @@ accelerate launch --num_cpu_threads_per_process=96 \
   --with_prior_preservation --prior_loss_weight=1.0 \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
-  --train_batch_size=1 \
+  --train_batch_size=2 \
   --learning_rate=1e-6 \
   --train_text_encoder \
   --lr_scheduler="constant" \
