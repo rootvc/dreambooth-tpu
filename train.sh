@@ -16,8 +16,7 @@ mkdir -p ./input/$1
 rm -rf ./models/*
 cp ./s3/photobooth-input/$2*.jpg ./input/$1
 
-conda run -n db --no-capture-output \
-  accelerate launch --num_cpu_threads_per_process=96 \
+accelerate launch --num_cpu_threads_per_process=96 \
   diffusers/examples/dreambooth/train_dreambooth.py \
   --pretrained_model_name_or_path="stabilityai/stable-diffusion-2-1" \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
