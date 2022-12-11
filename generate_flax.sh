@@ -23,7 +23,7 @@ accelerate launch --num_cpu_threads_per_process=96 --dynamo_backend=ofi \
     --step $RETRAIN_STEP \
     --prompt "disney style animation of one sks person as protagonist in a disney film" \
     --prompt "cartoon of one sks person as comic book superhero" \
-    --prompt "a Simpsons cartoon drawing of sks person in the style of the Simpsons by Matt Groenig" \
+    --prompt "a cartoon drawing of an sks person in the style of the Simpsons by Matt Groenig" \
     --prompt "anime style cartoon of sks person as anime character" \
     --prompt "a painting of sks person in the style of Hokusai" \
     --prompt "a silk screen of sks person in the style of Andy Warhol" \

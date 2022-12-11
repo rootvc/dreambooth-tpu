@@ -20,6 +20,7 @@ accelerate launch --num_cpu_threads_per_process=96 \
   diffusers/examples/dreambooth/train_dreambooth_flax.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
+  --cache_latents \
   --revision="bf16" \
   --instance_data_dir="./input/$1" \
   --class_data_dir="./s3/class/" \
