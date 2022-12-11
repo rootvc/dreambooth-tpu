@@ -8,8 +8,8 @@ if [[ $# -eq 0 ]]; then
   exit 1
 fi
 
-export STEPS=600
-export INTERVAL=450
+export STEPS=800
+export INTERVAL=800
 
 cd $DREAMBOOTH_DIR
 mkdir -p ./input/$1
@@ -18,7 +18,7 @@ cp ./s3/photobooth-input/$2*.jpg ./input/$1
 
 accelerate launch --num_cpu_threads_per_process=96 \
   diffusers/examples/dreambooth/train_dreambooth_flax.py \
-  --pretrained_model_name_or_path="stabilityai/stable-diffusion-2" \
+  --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --revision="bf16" \
   --instance_data_dir="./input/$1" \
   --class_data_dir="./s3/class/" \
