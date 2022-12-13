@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
-set -x
+set -ex
+
+sudo rm /usr/bin/python
+sudo ln -s /usr/bin/python3 /usr/bin/python
+
+sudo apt-get install mosh
 
 # IMPORTANT: this script must be run while current working directory is the Dreambooth git repo
 export DREAMBOOTH_DIR=$(pwd)
@@ -48,6 +53,9 @@ sudo ./aws/install
 rm -rf awscliv2.zip ./aws
 
 pip install markupsafe==2.0.1
+
+echo 'Run: `gcloud compute tpus tpu-vm scp --recurse  ~/.aws INSTANCE:`'
+read -n 1 -p "SCP your ~/.aws folder and hit enter"
 
 # Making required directories
 mkdir -p s3 s3/class s3/models s3/input s3/output s3/photobooth-input s3/data

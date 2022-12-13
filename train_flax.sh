@@ -31,6 +31,7 @@ accelerate launch --num_cpu_threads_per_process=96 \
   --train_batch_size=2 \
   --learning_rate=1e-6 \
   --train_text_encoder \
+  --augment_images \
   --lr_scheduler="constant" \
   --num_class_images=300 \
   --max_train_steps=$STEPS \
