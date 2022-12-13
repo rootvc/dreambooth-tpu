@@ -6,6 +6,12 @@ sudo ln -s /usr/bin/python3 /usr/bin/python
 
 sudo apt-get install mosh
 
+cat >>~/.tmux.conf <<EOF
+  new-session
+  set-window-option -g mouse on
+  set -g history-limit 30000
+EOF
+
 # IMPORTANT: this script must be run while current working directory is the Dreambooth git repo
 export DREAMBOOTH_DIR=$(pwd)
 echo 'export DREAMBOOTH_DIR'=$DREAMBOOTH_DIR >>~/.bashrc
