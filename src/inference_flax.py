@@ -54,7 +54,9 @@ def main():
     args = parse_args()
     model_path = os.path.expandvars(f"{args.model_dir}/{args.step}")
 
-    og_scheduler = FlaxDDPMScheduler.from_pretrained(model_path, subfolder="scheduler")
+    og_scheduler, _ = FlaxDDPMScheduler.from_pretrained(
+        model_path, subfolder="scheduler"
+    )
     scheduler = FlaxDDIMScheduler(
         beta_start=0.00085,
         beta_end=0.012,
@@ -74,8 +76,11 @@ def main():
     )
     params["scheduler"] = scheduler.create_state()
 
+    params = replicate(params)
+    prng_seed = jax.random.split(jax.random.PRNGKey(0), 8)
+
     names = set()
-    device_count = jax.device_count()
+    device_count = jax.local_device_count()
 
     image_groups = []
     for i, prompt_raw in enumerate(args.prompt):
@@ -85,9 +90,9 @@ def main():
         )
         images = pipe(  # type: ignore
             prompt_ids=shard(pipe.prepare_inputs([prompt] * device_count)),
-            params=replicate(params),
+            params=params,
             jit=True,
-            prng_seed=jax.random.split(jax.random.PRNGKey(0), 8),
+            prng_seed=prng_seed,
             num_inference_steps=75,
         ).images
         pil = pipe.numpy_to_pil(
@@ -101,7 +106,6 @@ def main():
         name = next(x for x in prompt.split(" ") if x not in names)
         names.add(name)
         for j, image in enumerate(images):
-
             image.save(f"{args.output_dir}/{args.id}/{now}_{args.id}_{name}_{j}.png")
 
 
