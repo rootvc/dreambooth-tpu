@@ -63,7 +63,7 @@ def main():
         beta_schedule="scaled_linear",
         set_alpha_to_one=True,
         steps_offset=1,
-        prediction_type=og_scheduler.config.prediction_type or "v-prediction",
+        prediction_type=og_scheduler.config.prediction_type or "v_prediction",
     )
 
     # modify the model path
