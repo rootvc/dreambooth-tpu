@@ -30,7 +30,7 @@ accelerate launch --num_cpu_threads_per_process=96 \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
   --train_batch_size=2 \
-  --learning_rate=5e-6 \
+  --learning_rate=2e-6 \
   --train_text_encoder \
   --augment_images \
   --num_class_images=300 \

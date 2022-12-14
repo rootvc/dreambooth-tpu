@@ -10,8 +10,10 @@ from diffusers import FlaxDDIMScheduler, FlaxDDPMScheduler, FlaxStableDiffusionP
 from flax.jax_utils import replicate
 from flax.training.common_utils import shard
 from jax.experimental.compilation_cache import compilation_cache as cc
+from jax.lax import stop_gradient
 
 cc.initialize_cache(os.path.expanduser("~/.cache/jax/compilation_cache"))
+device_count = jax.local_device_count()
 
 
 def parse_args():
@@ -40,15 +42,6 @@ def parse_args():
     return parser.parse_args()
 
 
-def inference_mode(f):
-    @functools.wraps(f)
-    def wrapper(*args, **kwargs):
-        with torch.inference_mode():
-            return f(*args, **kwargs)
-
-    return wrapper
-
-
 def gen_prompts(lst, n):
     for i in range(0, len(lst), n):
         yield [
@@ -58,7 +51,36 @@ def gen_prompts(lst, n):
         ]
 
 
-@inference_mode
+@functools.partial(jax.jit, static_argnums=(1, 2, 3))
+def eval(pipe, params, seed, prompts):
+    image_groups = []
+    for prompts in gen_prompts(prompts, 2):
+        images = pipe(  # type: ignore
+            prompt_ids=shard(
+                pipe.prepare_inputs(
+                    ([prompts[0]] * (device_count // 2))
+                    + ([prompts[1]] * (device_count // 2))
+                )
+            ),
+            params=params,
+            jit=True,
+            prng_seed=seed,
+            num_inference_steps=75,
+        ).images
+        pils = pipe.numpy_to_pil(
+            np.asarray(
+                images.reshape(
+                    (
+                        2,
+                        device_count // 2,
+                    )
+                    + images.shape[-3:]
+                )
+            )
+        )
+        image_groups.extend(pils)
+
+
 def main():
     args = parse_args()
     model_path = os.path.expandvars(f"{args.model_dir}/{args.step}")
@@ -85,41 +107,13 @@ def main():
     )
     params["scheduler"] = scheduler.create_state()
 
-    params = replicate(params)
+    params = replicate(stop_gradient(params))
     prng_seed = jax.random.split(jax.random.PRNGKey(0), 8)
+    results = eval(pipe, params, prng_seed, args.prompt)
 
     names = {"a", "the", "an"}
-    device_count = jax.local_device_count()
-
-    image_groups = []
-    for i, prompts in enumerate(gen_prompts(args.prompt, 2)):
-        images = pipe(  # type: ignore
-            prompt_ids=shard(
-                pipe.prepare_inputs(
-                    ([prompts[0]] * (device_count // 2))
-                    + ([prompts[1]] * (device_count // 2))
-                )
-            ),
-            params=params,
-            jit=True,
-            prng_seed=prng_seed,
-            num_inference_steps=75,
-        ).images
-        pils = pipe.numpy_to_pil(
-            np.asarray(
-                images.reshape(
-                    (
-                        2,
-                        device_count // 2,
-                    )
-                    + images.shape[-3:]
-                )
-            )
-        )
-        image_groups.extend(pils)
-
     now = int(time.time() * 1000)
-    for i, images in enumerate(image_groups):
+    for i, images in enumerate(results):
         prompt = args.prompt[i]
         name = next(x for x in prompt.split(" ") if x not in names)
         names.add(name)

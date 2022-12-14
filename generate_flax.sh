@@ -21,13 +21,13 @@ accelerate launch --num_cpu_threads_per_process=96 --dynamo_backend=ofi \
     --id $1 \
     --num-images 4 \
     --step $RETRAIN_STEP \
-    --prompt "disney style animation of one sks person as protagonist in a disney film" \
-    --prompt "cartoon of one sks person as comic book superhero" \
-    --prompt "a cartoon drawing of an sks person in the style of the Simpsons by Matt Groenig" \
-    --prompt "anime style cartoon of sks person as anime character" \
-    --prompt "a painting of sks person in the style of Hokusai" \
-    --prompt "a silk screen of sks person in the style of Andy Warhol" \
-    --prompt "a realistic rendering of one sks person made from lego" \
-    --prompt "a Japanese anime drawing of sks person using ninja techniques" \
-    --prompt "a cartoon drawing of sks person in the style of a Studio Ghibli anime film" \
-    --prompt "a realistic oil painting of sks person wearing stylish middle ages attire"
+    --prompt "disney-style-animation of one sks person, protagonist, disney film" \
+    --prompt "cartoon of one sks person, comic book superhero" \
+    --prompt "drawing of one sks person, cartoon, style of the Simpsons by Matt Groenig" \
+    --prompt "anime-style cartoon of one sks person, anime character" \
+    --prompt "painting of one sks person, style of Hokusai" \
+    --prompt "silk screen of one sks person, style of Andy Warhol" \
+    --prompt "rendering of one sks person made from lego blocks" \
+    --prompt "Japanese anime drawing of sks person, ninja techniques" \
+    --prompt "cartoon drawing of sks person, style of a Studio Ghibli anime film" \
+    --prompt "oil painting of sks person wearing stylish middle ages attire, realistic"
