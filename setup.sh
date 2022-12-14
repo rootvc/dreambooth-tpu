@@ -6,10 +6,35 @@ sudo ln -s /usr/bin/python3 /usr/bin/python
 
 sudo apt-get install mosh
 
-cat >>~/.tmux.conf <<EOF
-  new-session
-  set-window-option -g mouse on
-  set -g history-limit 30000
+cat >~/.tmux.conf <<-EOF
+	new-session
+	set-window-option -g mouse on
+	set -g history-limit 30000
+EOF
+
+mkdir -p ~/.cache/huggingface/accelerate
+cat >~/.cache/huggingface/accelerate/default_config.yaml <<-EOF
+	command_file: null
+	commands: null
+	compute_environment: LOCAL_MACHINE
+	distributed_type: TPU
+	downcast_bf16: no
+	dynamo_backend: INDUCTOR
+	fsdp_config: {}
+	gpu_ids: null
+	machine_rank: 0
+	main_process_ip: null
+	main_process_port: null
+	main_training_function: main
+	megatron_lm_config: {}
+	mixed_precision: bf16
+	num_machines: 1
+	num_processes: 1
+	rdzv_backend: static
+	same_network: true
+	tpu_name: null
+	tpu_zone: null
+	use_cpu: false
 EOF
 
 # IMPORTANT: this script must be run while current working directory is the Dreambooth git repo
@@ -43,9 +68,6 @@ pip install ninja
 pip install -v -U git+https://github.com/facebookresearch/xformers.git@main#egg=xformers
 pip install triton
 
-# Configuring accelerate
-accelerate config
-
 # Logging into Hugging Face
 # TODO: Can this be done non-interactively?
 echo Paste your Hugging Face token here, and say Y to the prompt
@@ -60,7 +82,7 @@ rm -rf awscliv2.zip ./aws
 
 pip install markupsafe==2.0.1
 
-echo 'Run: `gcloud compute tpus tpu-vm scp --recurse  ~/.aws INSTANCE:`'
+echo 'Run: `gcloud compute tpus tpu-vm scp --recurse  ~/.aws tpu-$tpu_id:`'
 read -n 1 -p "SCP your ~/.aws folder and hit enter"
 
 # Making required directories

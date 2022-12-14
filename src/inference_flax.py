@@ -49,6 +49,15 @@ def inference_mode(f):
     return wrapper
 
 
+def gen_prompts(lst, n):
+    for i in range(0, len(lst), n):
+        yield [
+            f"perfectly-centered-portrait of {prompt}"
+            ", intricate, highly detailed face, sharp focus, glamor pose, smooth"
+            for prompt in lst[i : i + n]
+        ]
+
+
 @inference_mode
 def main():
     args = parse_args()
@@ -83,22 +92,31 @@ def main():
     device_count = jax.local_device_count()
 
     image_groups = []
-    for i, prompt_raw in enumerate(args.prompt):
-        prompt = (
-            f"perfectly-centered-portrait of {prompt_raw}"
-            ", intricate, highly detailed, digital painting, artstation, glamor pose, concept art, smooth, sharp focus, illustration"
-        )
+    for i, prompts in enumerate(gen_prompts(args.prompt, 2)):
         images = pipe(  # type: ignore
-            prompt_ids=shard(pipe.prepare_inputs([prompt] * device_count)),
+            prompt_ids=shard(
+                pipe.prepare_inputs(
+                    ([prompts[0]] * (device_count // 2))
+                    + ([prompts[1]] * (device_count // 2))
+                )
+            ),
             params=params,
             jit=True,
             prng_seed=prng_seed,
             num_inference_steps=75,
         ).images
-        pil = pipe.numpy_to_pil(
-            np.asarray(images.reshape((device_count,) + images.shape[-3:]))
+        pils = pipe.numpy_to_pil(
+            np.asarray(
+                images.reshape(
+                    (
+                        2,
+                        device_count // 2,
+                    )
+                    + images.shape[-3:]
+                )
+            )
         )
-        image_groups.append(pil)
+        image_groups.extend(pils)
 
     now = int(time.time() * 1000)
     for i, images in enumerate(image_groups):
