@@ -50,29 +50,6 @@ def gen_prompts(lst, n):
         ]
 
 
-@jax.jit
-def eval(pipe, params, seed, prompts):
-    image_groups = []
-    for prompts in gen_prompts(prompts, 2):
-        images = pipe(  # type: ignore
-            prompt_ids=shard(
-                pipe.prepare_inputs(
-                    ([prompts[0]] * (device_count // 2))
-                    + ([prompts[1]] * (device_count // 2))
-                )
-            ),
-            params=params,
-            jit=True,
-            prng_seed=seed,
-            num_inference_steps=75,
-        ).images
-        pil_data = np.asarray(
-            images.reshape((2, device_count // 2) + images.shape[-3:])
-        )
-        pils = [pipe.numpy_to_pil(i) for i in pil_data]
-        image_groups.extend(pils)
-
-
 def main():
     args = parse_args()
     model_path = os.path.expandvars(f"{args.model_dir}/{args.step}")
@@ -101,11 +78,30 @@ def main():
 
     params = replicate(stop_gradient(params))
     prng_seed = jax.random.split(jax.random.PRNGKey(0), 8)
-    results = eval(pipe, params, prng_seed, args.prompt)
+
+    image_groups = []
+    for prompts in gen_prompts(args.prompt, 2):
+        images = pipe(
+            prompt_ids=shard(
+                pipe.prepare_inputs(
+                    ([prompts[0]] * (device_count // 2))
+                    + ([prompts[1]] * (device_count // 2))
+                )
+            ),
+            params=params,
+            jit=True,
+            prng_seed=prng_seed,
+            num_inference_steps=75,
+        ).images
+        pil_data = np.asarray(
+            images.reshape((2, device_count // 2) + images.shape[-3:])
+        )
+        pils = [pipe.numpy_to_pil(i) for i in pil_data]
+        image_groups.extend(pils)
 
     names = {"a", "the", "an"}
     now = int(time.time() * 1000)
-    for i, images in enumerate(results):
+    for i, images in enumerate(image_groups):
         prompt = args.prompt[i]
         name = next(x for x in prompt.split(" ") if x not in names)
         names.add(name)
