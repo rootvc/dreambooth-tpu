@@ -88,7 +88,7 @@ def main():
     params = replicate(params)
     prng_seed = jax.random.split(jax.random.PRNGKey(0), 8)
 
-    names = set()
+    names = {"a", "the", "an"}
     device_count = jax.local_device_count()
 
     image_groups = []
