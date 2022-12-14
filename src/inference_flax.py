@@ -50,7 +50,7 @@ def gen_prompts(lst, n):
         ]
 
 
-@functools.partial(jax.jit, static_argnums=(3,))
+@jax.jit
 def eval(pipe, params, seed, prompts):
     image_groups = []
     for prompts in gen_prompts(prompts, 2):
