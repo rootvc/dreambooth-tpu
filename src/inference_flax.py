@@ -5,7 +5,6 @@ import time
 
 import jax
 import numpy as np
-import torch
 from diffusers import FlaxDDIMScheduler, FlaxDDPMScheduler, FlaxStableDiffusionPipeline
 from flax.jax_utils import replicate
 from flax.training.common_utils import shard
@@ -67,17 +66,10 @@ def eval(pipe, params, seed, prompts):
             prng_seed=seed,
             num_inference_steps=75,
         ).images
-        pils = pipe.numpy_to_pil(
-            np.asarray(
-                images.reshape(
-                    (
-                        2,
-                        device_count // 2,
-                    )
-                    + images.shape[-3:]
-                )
-            )
+        pil_data = np.asarray(
+            images.reshape((2, device_count // 2) + images.shape[-3:])
         )
+        pils = [pipe.numpy_to_pil(i) for i in pil_data]
         image_groups.extend(pils)
 
 
