@@ -8,7 +8,8 @@ from operator import itemgetter
 import jax
 import numpy as np
 from deepface import DeepFace
-from diffusers import FlaxDDIMScheduler, FlaxDDPMScheduler, FlaxStableDiffusionPipeline
+from diffusers import (FlaxDDIMScheduler, FlaxDDPMScheduler,
+                       FlaxStableDiffusionPipeline)
 from flax.jax_utils import replicate
 from flax.training.common_utils import shard
 from jax.experimental.compilation_cache import compilation_cache as cc
@@ -76,7 +77,7 @@ def gen_prompts(args, n):
                 f", one good-looking {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
                 f", {round(attrs['age'] * 0.75)} years old"
                 ", front-facing center portrait close up"
-                ", detailed realistic face"
+                ", detailed realistic photo"
                 ", perfect beautiful face"
                 ", elegant, highly detailed, realistic, attractive"
             )
