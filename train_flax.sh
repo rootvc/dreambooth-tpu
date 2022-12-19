@@ -19,7 +19,7 @@ cp ./s3/photobooth-input/$2*.jpg ./input/$1
 numactl --cpunodebind=0 \
   accelerate launch --num_cpu_threads_per_process=96 \
   diffusers/examples/dreambooth/train_dreambooth_flax.py \
-  --pretrained_model_name_or_path="stabilityai/stable-diffusion-2-1-base" \
+  --pretrained_model_name_or_path="stabilityai/stable-diffusion-2-1" \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
   --cache_latents \
   --revision="bf16" \
