@@ -17,6 +17,7 @@ mkdir -p ./s3/output/$1
 numactl --cpunodebind=0 \
     accelerate launch --num_cpu_threads_per_process=96 --dynamo_backend=ofi \
     src/inference_flax.py \
+    --input_dir="./input" \
     --model_dir="./models" \
     --output_dir="./s3/output" \
     --id $1 \

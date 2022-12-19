@@ -8,7 +8,7 @@ sudo add-apt-repository ppa:keithw/mosh-dev
 sudo apt update
 
 # sudo apt-get install mosh
-sudo apt-get install numactl
+sudo apt-get install numactl ffmpeg libsm6 libxext6 -y
 
 cat >~/.tmux.conf <<-EOF
 	new-session
@@ -91,6 +91,8 @@ sudo ./aws/install
 rm -rf awscliv2.zip ./aws
 
 pip install markupsafe==2.0.1
+
+pip install deepface
 
 echo 'Run: `gcloud compute tpus tpu-vm scp --recurse  ~/.aws tpu-$tpu_id:`'
 read -n 1 -p "SCP your ~/.aws folder and hit enter"

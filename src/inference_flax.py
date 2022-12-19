@@ -1,9 +1,13 @@
 import argparse
+import glob
 import os
 import time
+from collections import Counter
+from operator import itemgetter
 
 import jax
 import numpy as np
+from deepface import DeepFace
 from diffusers import FlaxDDIMScheduler, FlaxDDPMScheduler, FlaxStableDiffusionPipeline
 from flax.jax_utils import replicate
 from flax.training.common_utils import shard
@@ -18,6 +22,7 @@ def parse_args():
     parser = argparse.ArgumentParser("simple inference")
     parser.add_argument("--output_dir", type=str, required=True)
     parser.add_argument("--model_dir", type=str, required=True)
+    parser.add_argument("--input_dir", type=str, required=True)
     parser.add_argument(
         "--prompt",
         help="A text prompt for the inference model",
@@ -40,11 +45,40 @@ def parse_args():
     return parser.parse_args()
 
 
-def gen_prompts(lst, n):
-    for i in range(0, len(lst), n):
+def analyze_input(path):
+    return {
+        k: v
+        for k, v in DeepFace.analyze(
+            path,
+            actions=["age", "gender", "race", "emotion"],
+            detector_backend="retinaface",
+        ).items()
+        if k in {"dominant_emotion", "age", "dominant_race", "gender"}
+    }
+
+
+def summarize_input(results):
+    keys = results[0].keys()
+    return {k: Counter(map(itemgetter(k), results)).most_common(1)[0] for k in keys}
+
+
+def analyze_inputs(args):
+    paths = glob.glob(f"{args.input_dir}/{args.id}/*.jpg")
+    return summarize_input(list(map(analyze_input, paths)))
+
+
+def gen_prompts(args, n):
+    attrs = analyze_inputs(args)
+    for i in range(0, len(args.prompt), n):
         yield [
-            f"a photo of sks person in the style of {prompt} design, front-facing, female"
-            for prompt in lst[i : i + n]
+            (
+                f"a photo of sks person, in the style of {prompt}"
+                f", #{attrs['dominant_emotion']} #{attrs['dominant_race']} #{attrs['gender']}"
+                f", #{attrs['age']} years old"
+                ", front-facing centered portrait"
+                ", highly-detailed face"
+            )
+            for prompt in args.prompt[i : i + n]
         ]
 
 
@@ -78,7 +112,8 @@ def main():
     prng_seed = jax.random.split(jax.random.PRNGKey(0), device_count)
 
     image_groups = []
-    for prompts in gen_prompts(args.prompt, 1):
+    for prompts in gen_prompts(args, 1):
+        print("Generating: ", prompts)
         prompt_ids = shard(pipe.prepare_inputs(prompts * device_count))
         images = pipe(
             prompt_ids=prompt_ids,
