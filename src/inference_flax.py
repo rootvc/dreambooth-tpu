@@ -5,7 +5,7 @@ import time
 
 import jax
 import numpy as np
-from diffusers import FlaxDDIMScheduler, FlaxSchedulerMixin, FlaxStableDiffusionPipeline
+from diffusers import FlaxDDIMScheduler, FlaxDDPMScheduler, FlaxStableDiffusionPipeline
 from flax.jax_utils import replicate
 from flax.training.common_utils import shard
 from jax.experimental.compilation_cache import compilation_cache as cc
@@ -54,7 +54,7 @@ def main():
     args = parse_args()
     model_path = os.path.expandvars(f"{args.model_dir}/{args.step}")
 
-    og_scheduler, _ = FlaxSchedulerMixin.from_pretrained(
+    og_scheduler, _ = FlaxDDPMScheduler.from_pretrained(
         model_path, subfolder="scheduler"
     )
     scheduler = FlaxDDIMScheduler(
