@@ -118,12 +118,6 @@ def main():
         prompt_ids = shard(pipe.prepare_inputs(prompts * device_count))
         images = pipe(
             prompt_ids=prompt_ids,
-            neg_prompt_ids=shard(
-                pipe.prepare_inputs(
-                    ["ugly, disfigured, deformed, poorly drawn, repetitive, boring"]
-                    * device_count
-                )
-            ),
             params=params,
             jit=True,
             prng_seed=prng_seed,
