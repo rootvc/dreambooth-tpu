@@ -8,8 +8,7 @@ from operator import itemgetter
 import jax
 import numpy as np
 from deepface import DeepFace
-from diffusers import (FlaxDDIMScheduler, FlaxDDPMScheduler,
-                       FlaxStableDiffusionPipeline)
+from diffusers import FlaxDDIMScheduler, FlaxDDPMScheduler, FlaxStableDiffusionPipeline
 from flax.jax_utils import replicate
 from flax.training.common_utils import shard
 from jax.experimental.compilation_cache import compilation_cache as cc
@@ -74,12 +73,12 @@ def gen_prompts(args, n):
         yield [
             (
                 f"a photo of sks person, in the style of {prompt}"
-                f", one good-looking {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
+                ", sks person"
+                f", single beautiful {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
                 f", {round(attrs['age'] * 0.75)} years old"
                 ", front-facing center portrait close up"
-                ", detailed realistic photo"
-                ", perfect beautiful face"
-                ", elegant, highly detailed, realistic, attractive"
+                ", detailed hyper-realistic intricate photo"
+                ", beautiful perfect face"
             )
             for prompt in args.prompt[i : i + n]
         ]
@@ -120,7 +119,12 @@ def main():
         prompt_ids = shard(pipe.prepare_inputs(prompts * device_count))
         images = pipe(
             prompt_ids=prompt_ids,
-            neg_prompt_ids=shard(pipe.prepare_inputs(["ugly"] * device_count)),
+            neg_prompt_ids=shard(
+                pipe.prepare_inputs(
+                    ["ugly, disfigured, deformed, poorly drawn, repetitive, boring"]
+                    * device_count
+                )
+            ),
             params=params,
             jit=True,
             prng_seed=prng_seed,
@@ -133,7 +137,7 @@ def main():
 
     now = int(time.time() * 1000)
     for i, images in enumerate(image_groups):
-        name = args.prompt[i]
+        name = args.prompt[i].replace(",", "")[:20]
         for j, image in enumerate(images):
             image.save(f"{args.output_dir}/{args.id}/{now}_{args.id}_{name}_{j}.png")
 
