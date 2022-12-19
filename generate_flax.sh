@@ -23,13 +23,13 @@ numactl --cpunodebind=0 \
     --id $1 \
     --num-images 4 \
     --step $RETRAIN_STEP \
-    --prompt "disney animation" \
-    --prompt "comic book" \
-    --prompt "Simpsons" \
-    --prompt "anime" \
-    --prompt "Hokusai" \
-    --prompt "Andy Warhol" \
-    --prompt "lego" \
-    --prompt "ninja" \
-    --prompt "Studio Ghibli anime" \
-    --prompt "oil painting"
+    --prompt "a cartoon disney animation" \
+    --prompt "a comic book character" \
+    --prompt "the Simpsons show" \
+    --prompt "a Japanese anime cartoon" \
+    --prompt "the Hokusai artist" \
+    --prompt "a Andy Warhol painting" \
+    --prompt "lego bricks" \
+    --prompt "a sneaky ninja" \
+    --prompt "a Studio Ghibli anime cartoon" \
+    --prompt "a famous oil painting"
