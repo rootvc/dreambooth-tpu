@@ -4,7 +4,11 @@ set -ex
 sudo rm /usr/bin/python
 sudo ln -s /usr/bin/python3 /usr/bin/python
 
-sudo apt-get install mosh
+sudo add-apt-repository ppa:keithw/mosh-dev
+sudo apt update
+
+# sudo apt-get install mosh
+sudo apt-get install numactl
 
 cat >~/.tmux.conf <<-EOF
 	new-session
@@ -46,6 +50,12 @@ echo 'export PATH=~/.local/bin${PATH:+:${PATH}}' >>~/.bashrc
 
 export XRT_TPU_CONFIG="localservice;0;localhost:51011"
 echo "export XRT_TPU_CONFIG='$XRT_TPU_CONFIG'" >>~/.bashrc
+
+export TPU_NUM_DEVICES=4
+echo "export TPU_NUM_DEVICES='$TPU_NUM_DEVICES'" >>~/.bashrc
+
+export ALLOW_MULTIPLE_LIBTPU_LOAD=1
+echo "export ALLOW_MULTIPLE_LIBTPU_LOAD='$ALLOW_MULTIPLE_LIBTPU_LOAD'" >>~/.bashrc
 
 # Installing required packages
 
