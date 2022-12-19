@@ -14,7 +14,8 @@ echo Transfer learning beginning at step: $RETRAIN_STEP
 
 mkdir -p ./s3/output/$1
 
-accelerate launch --num_cpu_threads_per_process=96 --dynamo_backend=ofi \
+numactl --cpunodebind=0 \
+    accelerate launch --num_cpu_threads_per_process=96 --dynamo_backend=ofi \
     src/inference_flax.py \
     --model_dir="./models" \
     --output_dir="./s3/output" \
