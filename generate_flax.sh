@@ -24,9 +24,9 @@ numactl --cpunodebind=0 \
     --num-images 4 \
     --step $RETRAIN_STEP \
     --prompt "a cartoon disney animation" \
-    --prompt "a comic book character" \
-    --prompt "the Simpsons show" \
-    --prompt "a Japanese anime cartoon" \
+    --prompt "a comic book superhero character" \
+    --prompt "the Simpsons show animation" \
+    --prompt "cartoon Japanese anime character" \
     --prompt "the Hokusai artist" \
     --prompt "a Andy Warhol painting" \
     --prompt "lego bricks" \
