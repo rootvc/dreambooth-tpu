@@ -59,7 +59,7 @@ def analyze_input(path):
 
 def summarize_input(results):
     keys = results[0].keys()
-    return {k: Counter(map(itemgetter(k), results)).most_common(1)[0] for k in keys}
+    return {k: Counter(map(itemgetter(k), results)).most_common(1)[0][0] for k in keys}
 
 
 def analyze_inputs(args):
