@@ -1,5 +1,4 @@
 import argparse
-import functools
 import os
 import time
 
@@ -89,8 +88,9 @@ def main():
             prng_seed=prng_seed,
             num_inference_steps=75,
         ).images
-        pil_data = np.asarray(images.reshape((device_count,) + images.shape[-3:]))
-        pils = [pipe.numpy_to_pil(i) for i in pil_data]
+        pils = pipe.numpy_to_pil(
+            np.asarray(images.reshape((device_count,) + images.shape[-3:]))
+        )
         image_groups.extend(pils)
 
     names = {"a", "the", "an"}
