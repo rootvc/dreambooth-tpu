@@ -8,8 +8,8 @@ if [[ $# -eq 0 ]]; then
   exit 1
 fi
 
-export STEPS=2000
-export INTERVAL=2000
+export STEPS=1200
+export INTERVAL=1200
 
 cd $DREAMBOOTH_DIR
 mkdir -p ./input/$1
@@ -30,7 +30,7 @@ numactl --cpunodebind=0 \
   --instance_prompt="photo of sks person" \
   --class_prompt="photo of person" \
   --train_batch_size=2 \
-  --learning_rate=2e-6 \
+  --learning_rate=5e-6 \
   --train_text_encoder \
   --augment_images \
   --num_class_images=300 \

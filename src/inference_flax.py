@@ -71,14 +71,7 @@ def gen_prompts(args, n):
     attrs = analyze_inputs(args)
     for i in range(0, len(args.prompt), n):
         yield [
-            (
-                f"a photo of sks person, in the style of {prompt}, singular"
-                f", beautiful {attrs['dominant_emotion']} {attrs['gender']} photo of sks person"
-                f", {round(attrs['age'] * 0.75)} years old"
-                ", front-facing center portrait close up"
-                ", detailed hyper-realistic intricate photo of sks person"
-                ", beautiful perfect face"
-            )
+            (f"a photo of sks person, in the style of {prompt}, singular")
             for prompt in args.prompt[i : i + n]
         ]
 
