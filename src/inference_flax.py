@@ -136,7 +136,7 @@ def main():
 
     now = int(time.time() * 1000)
     for i, images in enumerate(image_groups):
-        name = args.prompt[i].replace(",", "")[:20]
+        name = args.prompt[i].replace(",", "").replace(" ", "_")[:20]
         for j, image in enumerate(images):
             image.save(f"{args.output_dir}/{args.id}/{now}_{args.id}_{name}_{j}.png")
 
