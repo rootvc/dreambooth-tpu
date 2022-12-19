@@ -50,10 +50,10 @@ def analyze_input(path):
         k: v
         for k, v in DeepFace.analyze(
             path,
-            actions=["age", "gender", "race", "emotion"],
+            actions=["age", "gender", "emotion"],
             detector_backend="retinaface",
         ).items()
-        if k in {"dominant_emotion", "age", "dominant_race", "gender"}
+        if k in {"dominant_emotion", "age", "gender"}
     }
 
 
@@ -72,8 +72,8 @@ def gen_prompts(args, n):
     for i in range(0, len(args.prompt), n):
         yield [
             (
-                f"a photo of sks person, in the style of {prompt}"
-                f", beautiful {attrs['dominant_emotion']} {attrs['gender']}"
+                f"a photo of sks person, in the style of {prompt}, singular"
+                f", beautiful {attrs['dominant_emotion']} {attrs['gender']} photo of sks person"
                 f", {round(attrs['age'] * 0.75)} years old"
                 ", front-facing center portrait close up"
                 ", detailed hyper-realistic intricate photo of sks person"
