@@ -77,11 +77,11 @@ def main():
     params["scheduler"] = scheduler.create_state()
 
     params = replicate(stop_gradient(params))
-    prng_seed = jax.random.split(jax.random.PRNGKey(0), 8)
+    prng_seed = jax.random.split(jax.random.PRNGKey(0), device_count)
 
     image_groups = []
     for prompts in gen_prompts(args.prompt, 1):
-        prompt_ids = shard(pipe.prepare_inputs(prompts[0]))
+        prompt_ids = shard(pipe.prepare_inputs(prompts[0] * device_count))
         print(prompt_ids.size)
         images = pipe(
             prompt_ids=prompt_ids,
@@ -90,9 +90,7 @@ def main():
             prng_seed=prng_seed,
             num_inference_steps=75,
         ).images
-        pil_data = np.asarray(
-            images.reshape((2, device_count // 2) + images.shape[-3:])
-        )
+        pil_data = np.asarray(images.reshape((device_count,) + images.shape[-3:]))
         pils = [pipe.numpy_to_pil(i) for i in pil_data]
         image_groups.extend(pils)
 
