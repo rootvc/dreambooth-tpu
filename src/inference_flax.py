@@ -74,10 +74,11 @@ def gen_prompts(args, n):
             (
                 f"a photo of sks person, in the style of {prompt}"
                 f", {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
-                f", {round(attrs['age'] * 0.8)} years old"
+                f", {round(attrs['age'] * 0.75)} years old"
                 ", front-facing center portrait"
-                ", highly-detailed human-like face"
-                ", beautiful and attractive"
+                ", detailed realistic face"
+                ", perfect beautiful face"
+                ", elegant, highly detailed, attractive"
             )
             for prompt in args.prompt[i : i + n]
         ]
@@ -118,6 +119,7 @@ def main():
         prompt_ids = shard(pipe.prepare_inputs(prompts * device_count))
         images = pipe(
             prompt_ids=prompt_ids,
+            neg_prompt_ids=shard(pipe.prepare_inputs(["ugly"] * device_count)),
             params=params,
             jit=True,
             prng_seed=prng_seed,
