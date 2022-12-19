@@ -7,7 +7,7 @@ sudo ln -s /usr/bin/python3 /usr/bin/python
 sudo add-apt-repository ppa:keithw/mosh-dev
 sudo apt update
 
-# sudo apt-get install mosh
+sudo apt-get install mosh
 sudo apt-get install numactl ffmpeg libsm6 libxext6 -y
 
 cat >~/.tmux.conf <<-EOF
