@@ -43,7 +43,7 @@ def parse_args():
 def gen_prompts(lst, n):
     for i in range(0, len(lst), n):
         yield [
-            f"highly detailed centered front-facing portrait of one sks person, {prompt}"
+            f"highly detailed centered front-facing portrait of one sks person, {prompt} style"
             for prompt in lst[i : i + n]
         ]
 
@@ -92,12 +92,9 @@ def main():
         )
         image_groups.append(pils)
 
-    names = {"a", "the", "an"}
     now = int(time.time() * 1000)
     for i, images in enumerate(image_groups):
-        prompt = args.prompt[i]
-        name = next(x for x in prompt.split(" ") if x not in names)
-        names.add(name)
+        name = args.prompt[i]
         for j, image in enumerate(images):
             image.save(f"{args.output_dir}/{args.id}/{now}_{args.id}_{name}_{j}.png")
 
