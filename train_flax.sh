@@ -8,8 +8,8 @@ if [[ $# -eq 0 ]]; then
   exit 1
 fi
 
-export STEPS=800
-export INTERVAL=800
+export STEPS=1000
+export INTERVAL=1000
 
 cd $DREAMBOOTH_DIR
 mkdir -p ./input/$1
@@ -27,8 +27,8 @@ numactl --cpunodebind=0 \
   --class_data_dir="./s3/class/" \
   --output_dir="./models/" \
   --with_prior_preservation --prior_loss_weight=1.0 \
-  --instance_prompt="photo of sks person" \
-  --class_prompt="photo of person" \
+  --instance_prompt="a photo of sks person" \
+  --class_prompt="a photo of person" \
   --train_batch_size=4 \
   --learning_rate=5e-6 \
   --train_text_encoder \
