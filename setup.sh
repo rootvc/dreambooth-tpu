@@ -94,9 +94,11 @@ pip install markupsafe==2.0.1
 
 pip install deepface
 
-git clone https://github.com/yasyf/CodeFormer
+git clone https://github.com/sczhou/CodeFormer
 pushd CodeFormer
 pip install -r requirements.txt
+python basicsr/setup.py develop || true
+python -c "import basicsr"
 mv scripts/download_pretrained_models.py download_pretrained_models.py
 python download_pretrained_models.py CodeFormer
 popd
