@@ -81,8 +81,7 @@ def main():
 
     image_groups = []
     for prompts in gen_prompts(args.prompt, 1):
-        prompt_ids = shard(pipe.prepare_inputs(prompts[0] * device_count))
-        print(prompt_ids.size)
+        prompt_ids = shard(pipe.prepare_inputs(prompts * device_count))
         images = pipe(
             prompt_ids=prompt_ids,
             params=params,

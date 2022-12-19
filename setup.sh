@@ -33,7 +33,7 @@ cat >~/.cache/huggingface/accelerate/default_config.yaml <<-EOF
 	megatron_lm_config: {}
 	mixed_precision: bf16
 	num_machines: 1
-	num_processes: 1
+	num_processes: 4
 	rdzv_backend: static
 	same_network: true
 	tpu_name: null
