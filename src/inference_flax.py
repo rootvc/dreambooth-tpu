@@ -80,13 +80,8 @@ def main():
     prng_seed = jax.random.split(jax.random.PRNGKey(0), 8)
 
     image_groups = []
-    for prompts in gen_prompts(args.prompt, 2):
-        prompt_ids = shard(
-            pipe.prepare_inputs(
-                ([prompts[0]] * (device_count // 2))
-                + ([prompts[1]] * (device_count // 2))
-            )
-        )
+    for prompts in gen_prompts(args.prompt, 1):
+        prompt_ids = shard(pipe.prepare_inputs(prompts[0]))
         print(prompt_ids.size)
         images = pipe(
             prompt_ids=prompt_ids,
