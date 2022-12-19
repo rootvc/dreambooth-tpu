@@ -91,7 +91,7 @@ def main():
         pils = pipe.numpy_to_pil(
             np.asarray(images.reshape((device_count,) + images.shape[-3:]))
         )
-        image_groups.extend(pils)
+        image_groups.append(pils)
 
     names = {"a", "the", "an"}
     now = int(time.time() * 1000)
