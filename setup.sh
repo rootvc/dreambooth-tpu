@@ -94,6 +94,13 @@ pip install markupsafe==2.0.1
 
 pip install deepface
 
+git clone https://github.com/yasyf/CodeFormer
+pushd CodeFormer
+pip install -r requirements.txt
+mv scripts/download_pretrained_models.py download_pretrained_models.py
+python download_pretrained_models.py CodeFormer
+popd
+
 echo 'Run: `gcloud compute tpus tpu-vm scp --recurse  ~/.aws tpu-$tpu_id:`'
 read -n 1 -p "SCP your ~/.aws folder and hit enter"
 

@@ -74,7 +74,7 @@ def gen_prompts(args, n):
             (
                 f"a photo of sks person, in the style of {prompt}"
                 ", sks person"
-                f", single beautiful {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
+                f", single beautiful {attrs['dominant_emotion']} {attrs['gender']}"
                 f", {round(attrs['age'] * 0.75)} years old"
                 ", front-facing center portrait close up"
                 ", detailed hyper-realistic intricate photo"

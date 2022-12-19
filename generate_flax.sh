@@ -12,6 +12,7 @@ cd $DREAMBOOTH_DIR
 echo Generating images for $1
 echo Transfer learning beginning at step: $RETRAIN_STEP
 
+mkdir -p ./s3/tmp/output/$1
 mkdir -p ./s3/output/$1
 
 numactl --cpunodebind=0 \
@@ -19,7 +20,7 @@ numactl --cpunodebind=0 \
     src/inference_flax.py \
     --input_dir="./input" \
     --model_dir="./models" \
-    --output_dir="./s3/output" \
+    --output_dir="./s3/tmp/output" \
     --id $1 \
     --num-images 4 \
     --step $RETRAIN_STEP \
@@ -40,3 +41,11 @@ numactl --cpunodebind=0 \
     --prompt "detailed ink drawing, Lone Wolf and Cub manga panel 4 k, full body, sword slash, manga" \
     --prompt "masterpiece, best quality, flowers, sun, water, butterflies" \
     --prompt "Retro comic style artwork, highly detailed James Bond, comic book cover, symmetrical, vibrant"
+
+pushd CodeFormer
+numactl --cpunodebind=0 \
+    python inference_codeformer.py \
+    -w 0.7 --input_path ../s3/tmp/output/$1 \
+    --bg_upsampler realesrgan --face_upsample \
+    --output_path ../s3/output/$1
+popd
