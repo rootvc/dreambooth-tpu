@@ -43,7 +43,7 @@ def parse_args():
 def gen_prompts(lst, n):
     for i in range(0, len(lst), n):
         yield [
-            f"highly detailed centered front-facing portrait of one sks person, {prompt} style"
+            f"one sks person in style of {prompt}, portrait, highly detailed centered front-facing"
             for prompt in lst[i : i + n]
         ]
 
