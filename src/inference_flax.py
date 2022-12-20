@@ -75,7 +75,6 @@ def gen_prompts(args, n):
         yield [
             (
                 f"a photo of sks person, {prompt}, singular"
-                ", front-facing portrait of sks person, centered, close up"
                 f", {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
                 ", detailed face photo of sks person"
                 ", perfect face"
