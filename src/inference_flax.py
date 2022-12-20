@@ -74,11 +74,9 @@ def gen_prompts(args, n):
     for i in range(0, len(args.prompt), n):
         yield [
             (
-                f"a photo of sks person, {prompt}"
-                ", front-facing center portrait close up"
+                f"{prompt}, a photo of sks person"
+                ", front-facing portrait, centered, close up"
                 f", {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
-                f", {attrs['age']} years old"
-                ", perfect face"
             )
             for prompt in args.prompt[i : i + n]
         ]
@@ -117,6 +115,12 @@ def main():
         prompt_ids = shard(pipe.prepare_inputs(prompts * device_count))
         images = pipe(
             prompt_ids=prompt_ids,
+            neg_prompt_ids=shard(
+                pipe.prepare_inputs(
+                    ["ugly, disfigured, deformed, poorly drawn, repetitive, boring"]
+                    * device_count
+                )
+            ),
             params=params,
             jit=True,
             prng_seed=prng_seed,
