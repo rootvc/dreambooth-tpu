@@ -39,5 +39,5 @@ numactl --cpunodebind=0 \
     --output_path ../s3/output/$1
 popd
 
-mv ../s3/output/$1/final_results/*.jpg ../s3/output/$1/
-rm -r ../s3/output/$1/{restored_faces,final_results,cropped_faces}
+mv ./s3/output/$1/final_results/*.jpg ./s3/output/$1/
+rm -r ./s3/output/$1/{restored_faces,final_results,cropped_faces}
