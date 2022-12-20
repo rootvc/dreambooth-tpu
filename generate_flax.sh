@@ -15,6 +15,8 @@ echo Transfer learning beginning at step: $RETRAIN_STEP
 mkdir -p ./s3/tmp/output/$1
 mkdir -p ./s3/output/$1
 
+rm ./s3/tmp/output/$1/*
+
 numactl --cpunodebind=0 \
     accelerate launch --num_cpu_threads_per_process=96 --dynamo_backend=ofi \
     src/inference_flax.py \
@@ -30,6 +32,10 @@ numactl --cpunodebind=0 \
     --prompt "pencil sketch, 4 k, 8 k, absolute detail, black and white drawing" \
     --prompt "colorful cinematic still with glasses, armor, cyberpunk, with a xenonorph, in alien movie (1986),background made of brain cells, organic, ultrarealistic, leic 30mm" \
     --prompt "Retro comic style artwork, highly detailed James Bond, comic book cover, symmetrical, vibrant, colorful"
+
+mv ./s3/tmp/output/$1/*cartoon* ./s3/output/$1/
+mv ./s3/tmp/output/$1/*comic* ./s3/output/$1/
+mv ./s3/tmp/output/$1/*painting* ./s3/output/$1/
 
 pushd CodeFormer
 numactl --cpunodebind=0 \
