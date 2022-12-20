@@ -21,6 +21,7 @@ numactl --cpunodebind=0 \
   diffusers/examples/dreambooth/train_dreambooth_flax.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
+  --cache_latents \
   --revision="flax" \
   --resolution=256 \
   --instance_data_dir="./input/$1" \
