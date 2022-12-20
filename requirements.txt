@@ -1,9 +1,10 @@
-accelerate==0.12.0
-torchvision
-transformers>=4.21.0
+accelerate
+transformers
 ftfy
 tensorboard
 modelcards
 twilio
 python-dotenv
 redis[hiredis]
+deepspeed
+ninja

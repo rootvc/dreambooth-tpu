@@ -8,34 +8,33 @@ if [[ $# -eq 0 ]]; then
   exit 1
 fi
 
-export STEPS=450
-export INTERVAL=450
+export STEPS=600
+export INTERVAL=600
 
 cd $DREAMBOOTH_DIR
 mkdir -p ./input/$1
 rm -rf ./models/*
 cp ./s3/photobooth-input/$2*.jpg ./input/$1
 
-# python3 -m torch_xla.core.xrt_run_server --port 51011 >/dev/null 2>&1
-
-accelerate launch --num_cpu_threads_per_process=96 \
-  diffusers/examples/dreambooth/train_dreambooth.py \
-  --pretrained_model_name_or_path="stabilityai/stable-diffusion-2-1" \
+numactl --cpunodebind=0 \
+  accelerate launch --num_cpu_threads_per_process=96 \
+  diffusers/examples/dreambooth/train_dreambooth_flax.py \
+  --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
+  --cache_latents \
+  --augment_images \
+  --revision="flax" \
+  --resolution=256 \
   --instance_data_dir="./input/$1" \
   --class_data_dir="./s3/class/" \
   --output_dir="./models/" \
   --with_prior_preservation --prior_loss_weight=1.0 \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
-  --train_batch_size=1 \
-  --gradient_accumulation_steps=1 \
+  --train_batch_size=4 \
   --learning_rate=2e-6 \
-  --lr_scheduler="constant" \
-  --lr_warmup_steps=0 \
+  --train_text_encoder \
   --num_class_images=300 \
   --max_train_steps=$STEPS \
-  --use_8bit_adam \
-  --gradient_checkpointing \
   --mixed_precision=bf16 \
-  --save_interval=$INTERVAL
+  --save_steps=$INTERVAL

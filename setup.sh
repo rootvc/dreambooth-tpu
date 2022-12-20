@@ -1,64 +1,129 @@
 #!/usr/bin/env bash
-set -x
+set -ex
+
+sudo rm /usr/bin/python
+sudo ln -s /usr/bin/python3 /usr/bin/python
+
+sudo add-apt-repository ppa:keithw/mosh-dev -y
+sudo apt update
+
+sudo apt-get install mosh numactl ffmpeg libsm6 libxext6 -y
+
+cat >~/.tmux.conf <<-EOF
+	new-session
+	set-window-option -g mouse on
+	set -g history-limit 30000
+EOF
+
+mkdir -p ~/.cache/huggingface/accelerate
+cat >~/.cache/huggingface/accelerate/default_config.yaml <<-EOF
+	command_file: null
+	commands: null
+	compute_environment: LOCAL_MACHINE
+	distributed_type: TPU
+	downcast_bf16: no
+	dynamo_backend: INDUCTOR
+	fsdp_config: {}
+	gpu_ids: null
+	machine_rank: 0
+	main_process_ip: null
+	main_process_port: null
+	main_training_function: main
+	megatron_lm_config: {}
+	mixed_precision: bf16
+	num_machines: 1
+	num_processes: 1
+	rdzv_backend: static
+	same_network: true
+	tpu_name: null
+	tpu_zone: null
+	use_cpu: false
+EOF
 
 # IMPORTANT: this script must be run while current working directory is the Dreambooth git repo
-export DREAMBOOTH_DIR=`pwd`
-echo 'export DREAMBOOTH_DIR'=$DREAMBOOTH_DIR >> ~/.bashrc 
+export DREAMBOOTH_DIR=$(pwd)
+echo 'export DREAMBOOTH_DIR'=$DREAMBOOTH_DIR >>~/.bashrc
 
-# Creating conda environment
-conda update -n base conda
-conda create -n "db" python=3.10 ipython
+export PATH=~/.local/bin${PATH:+:${PATH}}
+echo 'export PATH=~/.local/bin${PATH:+:${PATH}}' >>~/.bashrc
+
+export XRT_TPU_CONFIG="localservice;0;localhost:51011"
+echo "export XRT_TPU_CONFIG='$XRT_TPU_CONFIG'" >>~/.bashrc
+
+export TPU_NUM_DEVICES=4
+echo "export TPU_NUM_DEVICES='$TPU_NUM_DEVICES'" >>~/.bashrc
+
+export ALLOW_MULTIPLE_LIBTPU_LOAD=1
+echo "export ALLOW_MULTIPLE_LIBTPU_LOAD='$ALLOW_MULTIPLE_LIBTPU_LOAD'" >>~/.bashrc
 
 # Installing required packages
-# TODO: Try moving two of these into requirements.txt
-conda run -n db --no-capture-output pip install git+https://github.com/ShivamShrirao/diffusers.git
-conda run -n db --no-capture-output pip install -r requirements.txt
-conda run -n db --no-capture-output pip install bitsandbytes
 
-# Configuring accelerate
-# TODO: Can this be done non-interactively?
-echo Answer: 0, 0, no, no, fp16
-conda run -n db --no-capture-output accelerate config
+git clone https://github.com/yasyf/diffusers
+pushd diffusers
+git checkout stable-diffusion
+pip install -e .
+cd examples/dreambooth
+pip install -r requirements.txt
+pip install -U -r requirements_flax.txt
+popd
+
+pip install -r requirements.txt
+pip install bitsandbytes
+pip install git+https://github.com/microsoft/DeepSpeed
+pip install "jax[tpu]>=0.2.16" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
+pip install git+https://github.com/huggingface/accelerate
+
+pip install ninja
+pip install -v -U git+https://github.com/facebookresearch/xformers.git@main#egg=xformers
+pip install triton
 
 # Logging into Hugging Face
 # TODO: Can this be done non-interactively?
 echo Paste your Hugging Face token here, and say Y to the prompt
-conda run -n db --no-capture-output huggingface-cli login
 git config --global credential.helper store
+pip install huggingface_hub
+huggingface-cli login
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+rm -rf awscliv2.zip ./aws
+
+pip install markupsafe==2.0.1
+
+pip install deepface
+
+git clone https://github.com/sczhou/CodeFormer
+pushd CodeFormer
+pip install -r requirements.txt
+python basicsr/setup.py develop || true
+python -c "import basicsr"
+mv scripts/download_pretrained_models.py download_pretrained_models.py
+python download_pretrained_models.py CodeFormer
+popd
+
+echo 'Run: `gcloud compute tpus tpu-vm scp --recurse  ~/.aws tpu-$tpu_id:`'
+read -n 1 -p "SCP your ~/.aws folder and hit enter"
 
 # Making required directories
 mkdir -p s3 s3/class s3/models s3/input s3/output s3/photobooth-input s3/data
-aws s3 sync s3://rootvc-dreambooth/class s3/class # Only needed to speed up first run
-aws s3 sync s3://rootvc-dreambooth/input s3/input # Start with up to date input history
-aws s3 sync s3://rootvc-dreambooth/output s3/output # Start with up to date output history (to prevent repeat jobs)
+aws s3 sync s3://rootvc-dreambooth/class s3/class                         # Only needed to speed up first run
+aws s3 sync s3://rootvc-dreambooth/photobooth-input ./s3/photobooth-input # Start with up to date input history
+aws s3 cp s3://rootvc-dreambooth/data/prompts.txt ./s3/data/prompts.tsv   # Start with up to date prompts
 
 # Setting up services
 sudo cp daemons/*.sh /usr/bin/
 sudo cp daemons/*.service /lib/systemd/system/
 sudo systemctl daemon-reload
 
-# Setting up S3 Sync Service
-sudo systemctl enable s3sync.service
-sudo systemctl start s3sync.service
-
 # Setting up Dreamwatcher Service
 sudo systemctl enable dreamwatcher.service
 sudo systemctl start dreamwatcher.service
 
-# Setting up PBSync Service
-sudo systemctl enable pbsync.service
-sudo systemctl start pbsync.service
-
 # Show status of daemons
-sudo systemctl status s3sync.service
 sudo systemctl status dreamwatcher.service
-sudo systemctl status pbsync.service
 
 # Environment variables
 cp .env.example .env
 
-echo You're almost ready to train!
-echo Edit .env and insert your Twilio credentials to enable SMS
-echo (Optional) Run ./setup-optional.sh for memory performance improvement
-
-set -x
+exec bash --login
