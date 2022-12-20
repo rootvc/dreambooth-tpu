@@ -23,6 +23,7 @@ numactl --cpunodebind=0 \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
   --cache_latents \
   --augment_images \
+  --lora \
   --revision="flax" \
   --resolution=256 \
   --instance_data_dir="./input/$1" \
