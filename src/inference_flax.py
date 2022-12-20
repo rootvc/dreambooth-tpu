@@ -76,6 +76,7 @@ def gen_prompts(args, n):
                 f", {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
                 f", {round(attrs['age'] * 0.75)} years old"
                 ", front-facing center portrait close up"
+                ", beautiful face, perfect face"
             )
             for prompt in args.prompt[i : i + n]
         ]
@@ -116,7 +117,6 @@ def main():
         prompt_ids = shard(pipe.prepare_inputs(prompts * device_count))
         images = pipe(
             prompt_ids=prompt_ids,
-            neg_prompt_ids=shard(pipe.prepare_inputs(["ugly"] * device_count)),
             params=params,
             jit=True,
             prng_seed=prng_seed,

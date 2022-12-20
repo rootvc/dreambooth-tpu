@@ -29,7 +29,7 @@ numactl --cpunodebind=0 \
   \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
-  --train_batch_size=4 \
+  --train_batch_size=1 \
   --learning_rate=5e2 \
   --train_text_encoder \
   \
