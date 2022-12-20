@@ -86,8 +86,7 @@ def gen_prompts(args, n):
 
 def main():
     args = parse_args()
-    # model_path = os.path.expandvars(f"{args.model_dir}/{args.step}")
-    model_path = os.path.expandvars(args.model_dir)
+    model_path = os.path.expandvars(f"{args.model_dir}/{args.step}")
 
     scheduler = FlaxDDIMScheduler(
         beta_start=0.00085,
