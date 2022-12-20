@@ -74,9 +74,10 @@ def gen_prompts(args, n):
     for i in range(0, len(args.prompt), n):
         yield [
             (
-                f" a photo of sks person, {prompt}"
-                ", front-facing portrait, centered, close up"
+                f"a photo of sks person, {prompt}, singular"
+                ", front-facing portrait of sks person, centered, close up"
                 f", {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
+                ", detailed face photo of sks person"
             )
             for prompt in args.prompt[i : i + n]
         ]
@@ -108,6 +109,12 @@ def main():
     prng_seed = jax.random.split(
         jax.random.PRNGKey(random.randint(0, sys.maxsize)), device_count
     )
+    neg_prompt_ids = shard(
+        pipe.prepare_inputs(
+            ["ugly, disfigured, deformed, poorly drawn, repetitive, boring"]
+            * device_count
+        )
+    )
 
     image_groups = []
     for prompts in gen_prompts(args, 1):
@@ -115,12 +122,7 @@ def main():
         prompt_ids = shard(pipe.prepare_inputs(prompts * device_count))
         images = pipe(
             prompt_ids=prompt_ids,
-            neg_prompt_ids=shard(
-                pipe.prepare_inputs(
-                    ["ugly, disfigured, deformed, poorly drawn, repetitive, boring"]
-                    * device_count
-                )
-            ),
+            neg_prompt_ids=neg_prompt_ids,
             params=params,
             jit=True,
             prng_seed=prng_seed,
