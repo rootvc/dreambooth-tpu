@@ -24,13 +24,12 @@ numactl --cpunodebind=0 \
     --id $1 \
     --num-images 4 \
     --step $RETRAIN_STEP \
-    --prompt "cartoon anime character, scene from an anime cartoon, japanese anime, shonen jump" \
+    --prompt "cartoon anime character, naruto, shonen jump" \
     --prompt "gorgeous, ((stunning)), tight silver jacket, samadhi loving serene, ((35mm head and shoulders portrait, looking into camera)), intricate, 8k, highly detailed, volumetric lighting, digital painting, intense gaze, sharp focus, ((Alena Aenami)), I merged so completely with Love, and was so fused, that I became Love and Love became me" \
     --prompt "impressionist painting, Daniel F Gerhartz, nature" \
     --prompt "pencil sketch, 4 k, 8 k, absolute detail, black and white drawing" \
-    --prompt "detailed ink drawing, Lone Wolf and Cub manga panel 4 k, full body, sword slash, manga" \
     --prompt "colorful cinematic still with glasses, armor, cyberpunk, with a xenonorph, in alien movie (1986),background made of brain cells, organic, ultrarealistic, leic 30mm" \
-    --prompt "Retro comic style artwork, highly detailed James Bond, comic book cover, symmetrical, vibrant"
+    --prompt "Retro comic style artwork, highly detailed James Bond, comic book cover, symmetrical, vibrant, colorful"
 
 # pushd CodeFormer
 # numactl --cpunodebind=0 \
