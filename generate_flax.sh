@@ -20,7 +20,7 @@ numactl --cpunodebind=0 \
     src/inference_flax.py \
     --input_dir="./input" \
     --model_dir="./models" \
-    --output_dir="./s3/output" \
+    --output_dir="./s3/tmp/output" \
     --id $1 \
     --num-images 4 \
     --step $RETRAIN_STEP \
@@ -31,13 +31,13 @@ numactl --cpunodebind=0 \
     --prompt "colorful cinematic still with glasses, armor, cyberpunk, with a xenonorph, in alien movie (1986),background made of brain cells, organic, ultrarealistic, leic 30mm" \
     --prompt "Retro comic style artwork, highly detailed James Bond, comic book cover, symmetrical, vibrant, colorful"
 
-# pushd CodeFormer
-# numactl --cpunodebind=0 \
-#     python inference_codeformer.py \
-#     -w 0.7 --input_path ../s3/tmp/output/$1 \
-#     --face_upsample \
-#     --output_path ../s3/output/$1
-# popd
+pushd CodeFormer
+numactl --cpunodebind=0 \
+    python inference_codeformer.py \
+    -w 0.7 --input_path ../s3/tmp/output/$1 \
+    --face_upsample \
+    --output_path ../s3/output/$1
+popd
 
-# mv ../s3/output/$1/final_results/*.jpg ../s3/output/$1/
-# rm -r ../s3/output/$1/{restored_faces,final_results,cropped_faces}
+mv ../s3/output/$1/final_results/*.jpg ../s3/output/$1/
+rm -r ../s3/output/$1/{restored_faces,final_results,cropped_faces}
