@@ -26,7 +26,7 @@ numactl --cpunodebind=0 \
     --id $1 \
     --num-images 4 \
     --step $RETRAIN_STEP \
-    --prompt "cartoon anime character, naruto, shonen jump" \
+    --prompt "cartoon anime character, shonen jump" \
     --prompt "gorgeous, ((stunning)), tight silver jacket, samadhi loving serene, ((35mm head and shoulders portrait, looking into camera)), intricate, 8k, highly detailed, volumetric lighting, digital painting, intense gaze, sharp focus, ((Alena Aenami)), I merged so completely with Love, and was so fused, that I became Love and Love became me" \
     --prompt "impressionist painting, Daniel F Gerhartz, nature" \
     --prompt "pencil sketch, 4 k, 8 k, absolute detail, black and white drawing" \
