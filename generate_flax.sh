@@ -36,7 +36,7 @@ numactl --cpunodebind=0 \
     --prompt "cinematic still, person with glasses as rugged warrior, threatening xenomorph, alien movie" \
     --prompt "colorful cinematic still of sksxvs2 man with glasses, armor, cyberpunk, with a xenonorph, in alien movie (1986),background made of brain cells, organic, ultrarealistic, leic 30mm" \
     --prompt "teampunk warrior, neon organic vines, glasses, digital painting" \
-    --prompt "soldier in world war one, dreary, depressing, grey, raining" \
+    --prompt "soldier in world war one, dreary, depressing, grey, raining, gloomy, war, death" \
     --prompt "person in advanced organic armor, biological filigree, flowing hair, neon details, intricate, elegant, highly detailed, digital painting, artstation, concept art, smooth, sharp focus, octane, art by Krenz Cushart , Artem Demura, Alphonse Mucha, digital cgi art 8K HDR by Yuanyuan Wang photorealistic" \
     --prompt "Retro comic style artwork, highly detailed James Bond, comic book cover, symmetrical, vibrant"
 
