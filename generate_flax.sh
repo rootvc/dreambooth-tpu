@@ -28,19 +28,19 @@ numactl --cpunodebind=0 \
     --prompt "comic book superhero character" \
     --prompt "cartoon anime character" \
     --prompt "Hokusai artist" \
-    --prompt "Andy Warhol painting" \
-    --prompt "sneaky ninja, dark, bleak, cyberpunk" \
-    --prompt "Studio Ghibli film, sketch" \
-    --prompt "50mm, sharp, muscular" \
-    --prompt "winter gothic, leather, gothic jewellery, flowing cloak, elegant pose" \
-    --prompt "impressionist painting, Daniel F Gerhartz, nature" \
-    --prompt "pencil sketch, greg rutkowski, in the style of kentaro miura, 4 k, 8 k, absolute detail, black and white drawing" \
-    --prompt "supermario with glasses, mustache, blue overall, red short" \
-    --prompt "Film still from Avatar, cinematograp by James Cameron, 2020, dramatic lighting, bokeh" \
-    --prompt "stopmotion character, Kubo and the Two Strings, ParaNorman, Aardman, Laika Studios, grainy" \
-    --prompt "detailed ink drawing, Lone Wolf and Cub manga panel 4 k, full body, sword slash, manga" \
-    --prompt "masterpiece, best quality, flowers, sun, water, butterflies" \
-    --prompt "Retro comic style artwork, highly detailed James Bond, comic book cover, symmetrical, vibrant"
+    --prompt "Andy Warhol painting"
+# --prompt "sneaky ninja, dark, bleak, cyberpunk" \
+# --prompt "Studio Ghibli film, sketch" \
+# --prompt "50mm, sharp, muscular" \
+# --prompt "winter gothic, leather, gothic jewellery, flowing cloak, elegant pose" \
+# --prompt "impressionist painting, Daniel F Gerhartz, nature" \
+# --prompt "pencil sketch, greg rutkowski, in the style of kentaro miura, 4 k, 8 k, absolute detail, black and white drawing" \
+# --prompt "supermario with glasses, mustache, blue overall, red short" \
+# --prompt "Film still from Avatar, cinematograp by James Cameron, 2020, dramatic lighting, bokeh" \
+# --prompt "stopmotion character, Kubo and the Two Strings, ParaNorman, Aardman, Laika Studios, grainy" \
+# --prompt "detailed ink drawing, Lone Wolf and Cub manga panel 4 k, full body, sword slash, manga" \
+# --prompt "masterpiece, best quality, flowers, sun, water, butterflies" \
+# --prompt "Retro comic style artwork, highly detailed James Bond, comic book cover, symmetrical, vibrant"
 
 # pushd CodeFormer
 # numactl --cpunodebind=0 \
