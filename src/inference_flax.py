@@ -76,8 +76,7 @@ def gen_prompts(args, n):
             (
                 f"a photo of sks person, {prompt}, singular"
                 f", {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
-                ", detailed face photo of sks person"
-                ", perfect face"
+                ", perfect face photo of sks person"
                 f", {attrs['age']} years old"
             )
             for prompt in args.prompt[i : i + n]
