@@ -74,7 +74,7 @@ def gen_prompts(args, n):
     for i in range(0, len(args.prompt), n):
         yield [
             (
-                f"{prompt}, a photo of sks person"
+                f" a photo of sks person, {prompt}"
                 ", front-facing portrait, centered, close up"
                 f", {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
             )
@@ -124,7 +124,7 @@ def main():
             params=params,
             jit=True,
             prng_seed=prng_seed,
-            num_inference_steps=50,
+            num_inference_steps=100,
             guidance_scale=10.0,
         ).images
         pils = pipe.numpy_to_pil(
