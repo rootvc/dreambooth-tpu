@@ -78,8 +78,6 @@ def gen_prompts(args, n):
                 f", {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
                 f", {round(attrs['age'] * 0.90)} years old"
                 ", front-facing center portrait close up"
-                ", beautiful face, perfect face"
-                ", detailed hyper-realistic intricate photo"
             )
             for prompt in args.prompt[i : i + n]
         ]
