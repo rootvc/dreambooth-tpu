@@ -6,7 +6,7 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
-export RETRAIN_STEP=1500
+export RETRAIN_STEP=400
 cd $DREAMBOOTH_DIR
 
 echo Generating images for $1
