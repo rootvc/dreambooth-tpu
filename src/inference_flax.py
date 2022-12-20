@@ -88,16 +88,12 @@ def main():
     args = parse_args()
     model_path = os.path.expandvars(f"{args.model_dir}/{args.step}")
 
-    og_scheduler, _ = FlaxDDPMScheduler.from_pretrained(
-        model_path, subfolder="scheduler"
-    )
     scheduler = FlaxDDIMScheduler(
         beta_start=0.00085,
         beta_end=0.012,
         beta_schedule="scaled_linear",
         set_alpha_to_one=True,
         steps_offset=1,
-        prediction_type="v_prediction",
     )
 
     # modify the model path
