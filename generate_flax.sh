@@ -24,20 +24,16 @@ numactl --cpunodebind=0 \
     --id $1 \
     --num-images 4 \
     --step $RETRAIN_STEP \
-    --prompt "cartoon tv show, disney animated short, colorful" \
     --prompt "anime character, naruto, scene from an anime cartoon, japanese anime, shonen jump" \
     --prompt "an assassin sneaking through a dilapidated alley, movie still, 30mm" \
-    --prompt "a middle-eastern monarch, a ruler surrounded by riches and servants, with glowing sands in the background" \
-    --prompt "winter gothic, leather, gothic jewellery, flowing cloak, elegant pose" \
+    --prompt "gorgeous, ((stunning)), black straight hair, tight silver jacket, samadhi loving serene, ((35mm head and shoulders portrait, looking into camera)), intricate, 8k, highly detailed, volumetric lighting, digital painting, intense gaze, sharp focus, ((Alena Aenami)), I merged so completely with Love, and was so fused, that I became Love and Love became me" \
+    --prompt "winter gothic, leather, gothic jewellery, flowing cloak, elegant pose, outdoors, winter, snow, close up" \
     --prompt "impressionist painting, Daniel F Gerhartz, nature" \
     --prompt "pencil sketch, 4 k, 8 k, absolute detail, black and white drawing" \
     --prompt "detailed ink drawing, Lone Wolf and Cub manga panel 4 k, full body, sword slash, manga" \
-    --prompt "hallucination from 1970, hippie, tripping, acid, rainbow, daydream" \
-    --prompt "cinematic still, person with glasses as rugged warrior, threatening xenomorph, alien movie" \
     --prompt "colorful cinematic still with glasses, armor, cyberpunk, with a xenonorph, in alien movie (1986),background made of brain cells, organic, ultrarealistic, leic 30mm" \
-    --prompt "steampunk warrior, neon organic vines, glasses, digital painting" \
     --prompt "dying soldier in the trenches of world war one, army uniform, depressing, grey, morose" \
-    --prompt "person in advanced organic armor, biological filigree, flowing hair, neon details, intricate, elegant, highly detailed, digital painting, artstation, concept art, smooth, sharp focus, octane, art by Krenz Cushart , Artem Demura, Alphonse Mucha, digital cgi art 8K HDR by Yuanyuan Wang photorealistic" \
+    --prompt "advanced organic armor, biological filigree, flowing hair, neon details, intricate, elegant, highly detailed, digital painting, artstation, concept art, smooth, sharp focus, octane, art by Krenz Cushart , Artem Demura, Alphonse Mucha, digital cgi art 8K HDR by Yuanyuan Wang photorealistic" \
     --prompt "Retro comic style artwork, highly detailed James Bond, comic book cover, symmetrical, vibrant"
 
 # pushd CodeFormer

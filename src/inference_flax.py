@@ -76,7 +76,7 @@ def gen_prompts(args, n):
             (
                 f"a photo of sks person as {prompt}, singular"
                 f", {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
-                ", detailed face, perfect face photo of sks person"
+                ", detailed face, perfect face photo of sks person, realistic features"
                 f", {attrs['age']} years old"
             )
             for prompt in args.prompt[i : i + n]
@@ -124,7 +124,7 @@ def main():
             jit=True,
             prng_seed=prng_seed,
             num_inference_steps=100,
-            guidance_scale=14.0,
+            guidance_scale=15.0,
         ).images
         pils = pipe.numpy_to_pil(
             np.asarray(images.reshape((device_count,) + images.shape[-3:]))
