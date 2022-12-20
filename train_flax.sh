@@ -19,7 +19,8 @@ cp ./s3/photobooth-input/$2*.jpg ./input/$1
 numactl --cpunodebind=0 \
   accelerate launch --num_cpu_threads_per_process=96 \
   diffusers/examples/dreambooth/train_dreambooth_flax.py \
-  --pretrained_model_name_or_path="duongna/stable-diffusion-v1-4-flax" \
+  --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
+  --revision "bf16" \
   --resolution 256 \
   --instance_data_dir="./input/$1" \
   --class_data_dir="./s3/class/" \
