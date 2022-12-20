@@ -94,6 +94,7 @@ def main():
         beta_schedule="scaled_linear",
         set_alpha_to_one=True,
         steps_offset=1,
+        prediction_type="v_prediction",
     )
 
     # modify the model path
