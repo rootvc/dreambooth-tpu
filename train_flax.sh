@@ -28,7 +28,7 @@ numactl --cpunodebind=0 \
   --with_prior_preservation --prior_loss_weight=1.0 \
   --instance_prompt="a photo of sks person" \
   --class_prompt="a photo of person" \
-  --train_batch_size=1 \
+  --train_batch_size=4 \
   --learning_rate=2e-6 \
   --train_text_encoder \
   --num_class_images=300 \
