@@ -35,7 +35,6 @@ pushd CodeFormer
 numactl --cpunodebind=0 \
     python inference_codeformer.py \
     -w 0.7 --input_path ../s3/tmp/output/$1 \
-    --face_upsample \
     --output_path ../s3/output/$1
 popd
 
