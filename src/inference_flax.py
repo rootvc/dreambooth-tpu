@@ -126,7 +126,6 @@ def main():
             jit=True,
             prng_seed=prng_seed,
             num_inference_steps=100,
-            guidance_scale=10.0,
         ).images
         pils = pipe.numpy_to_pil(
             np.asarray(images.reshape((device_count,) + images.shape[-3:]))
