@@ -4,11 +4,10 @@ set -ex
 sudo rm /usr/bin/python
 sudo ln -s /usr/bin/python3 /usr/bin/python
 
-sudo add-apt-repository ppa:keithw/mosh-dev
+sudo add-apt-repository ppa:keithw/mosh-dev -y
 sudo apt update
 
-sudo apt-get install mosh
-sudo apt-get install numactl ffmpeg libsm6 libxext6 -y
+sudo apt-get install mosh numactl ffmpeg libsm6 libxext6 -y
 
 cat >~/.tmux.conf <<-EOF
 	new-session
@@ -33,7 +32,7 @@ cat >~/.cache/huggingface/accelerate/default_config.yaml <<-EOF
 	megatron_lm_config: {}
 	mixed_precision: bf16
 	num_machines: 1
-	num_processes: 4
+	num_processes: 1
 	rdzv_backend: static
 	same_network: true
 	tpu_name: null
@@ -108,9 +107,9 @@ read -n 1 -p "SCP your ~/.aws folder and hit enter"
 
 # Making required directories
 mkdir -p s3 s3/class s3/models s3/input s3/output s3/photobooth-input s3/data
-aws s3 sync s3://rootvc-dreambooth/class s3/class   # Only needed to speed up first run
-aws s3 sync s3://rootvc-dreambooth/input s3/input   # Start with up to date input history
-aws s3 sync s3://rootvc-dreambooth/output s3/output # Start with up to date output history (to prevent repeat jobs)
+aws s3 sync s3://rootvc-dreambooth/class s3/class                         # Only needed to speed up first run
+aws s3 sync s3://rootvc-dreambooth/photobooth-input ./s3/photobooth-input # Start with up to date input history
+aws s3 cp s3://rootvc-dreambooth/data/prompts.txt ./s3/data/prompts.tsv   # Start with up to date prompts
 
 # Setting up services
 sudo cp daemons/*.sh /usr/bin/
