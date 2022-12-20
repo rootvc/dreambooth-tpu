@@ -112,10 +112,7 @@ def main():
         jax.random.PRNGKey(random.randint(0, sys.maxsize)), device_count
     )
     neg_prompt_ids = shard(
-        pipe.prepare_inputs(
-            ["ugly, disfigured, deformed, poorly drawn, repetitive, boring"]
-            * device_count
-        )
+        pipe.prepare_inputs(["ugly, disfigured, deformed"] * device_count)
     )
 
     image_groups = []
