@@ -76,7 +76,7 @@ def gen_prompts(args, n):
             (
                 f"a photo of sks person as {prompt}, singular"
                 f", {attrs['dominant_emotion']} {attrs['dominant_race']} {attrs['gender']}"
-                ", detailed face, perfect face photo of sks person, realistic features"
+                ", perfect face photo of sks person, highly detailed portrait, sharp"
                 f", {attrs['age']} years old"
             )
             for prompt in args.prompt[i : i + n]
@@ -110,7 +110,7 @@ def main():
         jax.random.PRNGKey(random.randint(0, sys.maxsize)), device_count
     )
     neg_prompt_ids = shard(
-        pipe.prepare_inputs(["ugly, disfigured, deformed"] * device_count)
+        pipe.prepare_inputs(["ugly, disfigured, deformed, mutated"] * device_count)
     )
 
     image_groups = []
