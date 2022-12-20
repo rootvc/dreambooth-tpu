@@ -8,8 +8,8 @@ if [[ $# -eq 0 ]]; then
   exit 1
 fi
 
-export STEPS=350
-export INTERVAL=350
+export STEPS=300
+export INTERVAL=300
 
 cd $DREAMBOOTH_DIR
 mkdir -p ./input/$1
