@@ -1,6 +1,8 @@
 import argparse
 import glob
 import os
+import random
+import sys
 import time
 from collections import Counter
 from operator import itemgetter
@@ -109,7 +111,9 @@ def main():
     params["scheduler"] = scheduler.create_state()
 
     params = replicate(stop_gradient(params))
-    prng_seed = jax.random.split(jax.random.PRNGKey(0), device_count)
+    prng_seed = jax.random.split(
+        jax.random.PRNGKey(random.randint(0, sys.maxsize)), device_count
+    )
 
     image_groups = []
     for prompts in gen_prompts(args, 1):
