@@ -24,9 +24,8 @@ numactl --cpunodebind=0 \
     --id $1 \
     --num-images 4 \
     --step $RETRAIN_STEP \
-    --prompt "anime character, scene from an anime cartoon, japanese anime" \
+    --prompt "cartoon anime character, scene from an anime cartoon, japanese anime, shonen jump" \
     --prompt "gorgeous, ((stunning)), tight silver jacket, samadhi loving serene, ((35mm head and shoulders portrait, looking into camera)), intricate, 8k, highly detailed, volumetric lighting, digital painting, intense gaze, sharp focus, ((Alena Aenami)), I merged so completely with Love, and was so fused, that I became Love and Love became me" \
-    --prompt "winter gothic, leather, gothic jewellery, flowing cloak, elegant pose, outdoors, snow, close up, portrait" \
     --prompt "impressionist painting, Daniel F Gerhartz, nature" \
     --prompt "pencil sketch, 4 k, 8 k, absolute detail, black and white drawing" \
     --prompt "detailed ink drawing, Lone Wolf and Cub manga panel 4 k, full body, sword slash, manga" \
