@@ -15,7 +15,7 @@ echo Transfer learning beginning at step: $RETRAIN_STEP
 mkdir -p ./s3/tmp/output/$1
 mkdir -p ./s3/output/$1
 
-rm ./s3/tmp/output/$1/*
+rm -f ./s3/tmp/output/$1/*
 
 numactl --cpunodebind=0 \
     accelerate launch --num_cpu_threads_per_process=96 --dynamo_backend=ofi \
