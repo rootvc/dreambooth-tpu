@@ -104,7 +104,7 @@ def main():
     )
 
     unet, unet_params = FlaxLora2(FlaxUNet2DConditionModel).from_pretrained(
-        model_path
+        model_path,
         subfolder="unet",
         dtype=jax.numpy.bfloat16,
     )
@@ -120,8 +120,6 @@ def main():
     )
     params["unet"] = unet_params
     params["scheduler"] = scheduler.create_state()
-
-
 
     params = replicate(stop_gradient(params))
     prng_seed = jax.random.split(
