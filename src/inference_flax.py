@@ -10,7 +10,15 @@ from operator import itemgetter
 import jax
 import numpy as np
 from deepface import DeepFace
-from diffusers import FlaxDDIMScheduler, FlaxDDPMScheduler, FlaxStableDiffusionPipeline
+from diffusers import (
+    FlaxAutoencoderKL,
+    FlaxDDIMScheduler,
+    FlaxDDPMScheduler,
+    FlaxPNDMScheduler,
+    FlaxStableDiffusionPipeline,
+    FlaxUNet2DConditionModel,
+)
+from diffusers.experimental.lora.linear_with_lora_flax import FlaxLora2
 from flax.jax_utils import replicate
 from flax.training.common_utils import shard
 from jax.experimental.compilation_cache import compilation_cache as cc
@@ -95,15 +103,25 @@ def main():
         steps_offset=1,
     )
 
+    unet, unet_params = FlaxLora2(FlaxUNet2DConditionModel).from_pretrained(
+        model_path
+        subfolder="unet",
+        dtype=jax.numpy.bfloat16,
+    )
+
     # modify the model path
     pipe, params = FlaxStableDiffusionPipeline.from_pretrained(
         model_path,
+        unet=unet,
         scheduler=scheduler,
         safety_checker=None,
         from_flax=True,
         dtype=jax.numpy.bfloat16,
     )
+    params["unet"] = unet_params
     params["scheduler"] = scheduler.create_state()
+
+
 
     params = replicate(stop_gradient(params))
     prng_seed = jax.random.split(
