@@ -60,7 +60,7 @@ echo "export ALLOW_MULTIPLE_LIBTPU_LOAD='$ALLOW_MULTIPLE_LIBTPU_LOAD'" >>~/.bash
 
 git clone https://github.com/yasyf/diffusers
 pushd diffusers
-git checkout stable-diffusion
+git checkout yasyf/cache_latents_2
 pip install -e .
 cd examples/dreambooth
 pip install -r requirements.txt
