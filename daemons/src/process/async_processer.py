@@ -2,6 +2,8 @@ import csv
 import os
 import subprocess
 from functools import cached_property
+from pathlib import Path
+from typing import Set
 
 from redis import RedisCluster
 from sms import SMS
@@ -9,7 +11,7 @@ from train import Trainer
 from utils import DreamboothDirMixin, filename_to_token
 
 
-class Processer(DreamboothDirMixin):
+class AsyncProcesser(DreamboothDirMixin):
     PROCESSED = "dreambooth:processed"
 
     def __init__(self):
@@ -19,19 +21,17 @@ class Processer(DreamboothDirMixin):
             ssl=True,
             decode_responses=True,
         )
-        self.prompts = csv.DictReader(
-            open(f"{self.DREAMBOOTH_DIR}/s3/data/prompts.tsv", "r"),
-            delimiter="\t",
-        )
+
+    def all_ts(self) -> Set[str]:
+        return {
+            p.stem
+            for p in Path(f"{self.DREAMBOOTH_DIR}/s3/photobooth-input/").glob("*.jpg")
+        }
 
     @cached_property
     def unprocessed_tokens(self):
         print("Checking for unprocessed tokens...")
-        return [
-            p
-            for p in self.prompts
-            if not self.r.sismember(self.PROCESSED, filename_to_token(p["filename"]))
-        ]
+        self.r.sismember(self.PROCESSED, filename_to_token(p["filename"]))
 
     def generate_images(self, token: str, phone: str):
         trainer = Trainer(token)
