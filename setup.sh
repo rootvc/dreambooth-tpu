@@ -60,7 +60,7 @@ echo "export ALLOW_MULTIPLE_LIBTPU_LOAD='$ALLOW_MULTIPLE_LIBTPU_LOAD'" >>~/.bash
 
 git clone https://github.com/yasyf/diffusers
 pushd diffusers
-git checkout stable-diffusion
+git checkout yasyf/cache_latents_2
 pip install -e .
 cd examples/dreambooth
 pip install -r requirements.txt
@@ -107,9 +107,9 @@ read -n 1 -p "SCP your ~/.aws folder and hit enter"
 
 # Making required directories
 mkdir -p s3 s3/class s3/models s3/input s3/output s3/photobooth-input s3/data
-aws s3 sync s3://rootvc-dreambooth/class s3/class                         # Only needed to speed up first run
-aws s3 sync s3://rootvc-dreambooth/photobooth-input ./s3/photobooth-input # Start with up to date input history
-aws s3 cp s3://rootvc-dreambooth/data/prompts.txt ./s3/data/prompts.tsv   # Start with up to date prompts
+aws s3 sync s3://rootvc-dreambooth/class s3/class                             # Only needed to speed up first run
+aws s3 sync s3://rootvc-dreambooth/photobooth-input ./s3/photobooth-input     # Start with up to date input history
+aws s3 cp s3://rootvc-dreambooth/sparkbooth/prompts.txt ./s3/data/prompts.tsv # Start with up to date prompts
 
 # Setting up services
 sudo cp daemons/*.sh /usr/bin/

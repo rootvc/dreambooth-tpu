@@ -10,7 +10,7 @@ from operator import itemgetter
 import jax
 import numpy as np
 from deepface import DeepFace
-from diffusers import FlaxDDIMScheduler, FlaxDDPMScheduler, FlaxStableDiffusionPipeline
+from diffusers import FlaxDDIMScheduler, FlaxStableDiffusionPipeline
 from flax.jax_utils import replicate
 from flax.training.common_utils import shard
 from jax.experimental.compilation_cache import compilation_cache as cc

@@ -1,5 +1,5 @@
+from async_processer import AsyncProcesser
 from dotenv import load_dotenv
-from processer import Processer
 
 load_dotenv()
-Processer().run()
+AsyncProcesser().run()
